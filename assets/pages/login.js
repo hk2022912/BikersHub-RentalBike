@@ -19,7 +19,7 @@ export default function Login({ navigation }) {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert("Forgot Password", "Redirect to the password recovery page.");
+    navigation.navigate('Recovery'); // Navigates to the Recovery screen
   };
 
   return (
@@ -137,3 +137,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold' 
   },
 });
+
+

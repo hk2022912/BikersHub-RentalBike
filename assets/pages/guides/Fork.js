@@ -1,36 +1,35 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView, Linking } from 'react-native';
 
-const Wheels = ({ navigation }) => {
+const Fork = ({ navigation }) => {
   const openYouTubeLink = () => {
-    Linking.openURL('https://youtu.be/hdjB_wHW0-Q?si=8Vf6MM0bLqAYQ9Q5');
+    Linking.openURL('https://youtu.be/k5zn5PaDDKU?si=atxcBR0g_xSKdk_s');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Clickable Image to Open YouTube Video */}
       <TouchableOpacity onPress={openYouTubeLink}>
-        <Image source={require('../../img/wheels.png')} style={styles.image} />
+        <Image source={require('../../img/fork.png')} style={styles.image} />
       </TouchableOpacity>
 
       {/* Tools and Materials Section */}
       <View style={styles.toolsAndMaterials}>
         <Text style={styles.toolsAndMaterialsTitle}>Tools and Materials Needed:</Text>
-        <Text style={styles.toolItem}>- Tire levers</Text>
-        <Text style={styles.toolItem}>- Patch kit or a new tube</Text>
-        <Text style={styles.toolItem}>- Air pump</Text>
-        <Text style={styles.toolItem}>- Wrench (if your wheel doesn't have a quick release)</Text>
+        <Text style={styles.toolItem}>- Hex/Allen Wrench Set</Text>
+        <Text style={styles.toolItem}>- Torque Wrench</Text>
+        <Text style={styles.toolItem}>- Screwdriver Set</Text>
+        <Text style={styles.toolItem}>- Soft-Bristle Brush</Text>
+        <Text style={styles.toolItem}>- Cleaning Brush Set</Text>
       </View>
 
       {/* Step-by-Step Guide */}
       <View style={styles.steps}>
         <Text style={styles.stepsTitle}>Steps:</Text>
-        <Text style={styles.stepItem}>1. Remove the wheel from the bike frame.</Text>
-        <Text style={styles.stepItem}>2. Use tire levers to remove the tire from the rim.</Text>
-        <Text style={styles.stepItem}>3. Inspect the tire for punctures and repair them with a patch kit.</Text>
-        <Text style={styles.stepItem}>4. Replace the tube or patch the existing one if necessary.</Text>
-        <Text style={styles.stepItem}>5. Reassemble the tire back onto the rim and inflate it.</Text>
-        <Text style={styles.stepItem}>6. Reattach the wheel to the bike frame.</Text>
+        <Text style={styles.stepItem}>1. Loosen the bolts securing the handlebars.</Text>
+        <Text style={styles.stepItem}>2. Adjust the handlebar height and angle as desired.</Text>
+        <Text style={styles.stepItem}>3. Tighten the bolts to secure the handlebars.</Text>
+        <Text style={styles.stepItem}>4. Ensure all bolts are tight and handlebars are stable.</Text>
       </View>
     </ScrollView>
   );
@@ -76,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Wheels;
+export default Fork;

@@ -7,22 +7,63 @@ const Guide = ({ navigation }) => {
     {
       title: 'Wheels',
       description: 'Learn how to maintain and replace wheels',
-      icon: require('../../img/6.jpg'), // Update this to the correct path for your image
-      screen: 'Wheels', // Add the corresponding screen name for navigation
+      icon: require('../../img/wheels.png'), // Updated image path
+      screen: 'Wheels',
     },
     {
       title: 'Handlebars',
       description: 'Discover how to adjust and replace handlebars',
-      icon: require('../../img/6.jpg'), // Replace with actual image path if different
-      screen: 'Handlebars', // Corresponding screen for handlebars
+      icon: require('../../img/handlebars.png'), // Updated image path
+      screen: 'Handlebars',
     },
     {
       title: 'Brakes',
       description: 'Troubleshooting common brake issues',
-      icon: require('../../img/6.jpg'), // Replace with actual image path if different
-      screen: 'Brakes', // Corresponding screen for brakes
+      icon: require('../../img/Brakes.png'), // Updated image path
+      screen: 'Brakes',
     },
-    // Add more tutorials as needed
+    {
+      title: 'Frame',
+      description: 'Understand your bike frame',
+      icon: require('../../img/Frame.png'), // Updated image path
+      screen: 'Frame',
+    },
+    {
+      title: 'Fork',
+      description: 'To replace or adjust your fork',
+      icon: require('../../img/fork.png'), // Updated image path
+      screen: 'Fork',
+    },
+    {
+      title: 'Saddle (Seat)',
+      description: 'Learn how to adjust saddle height and angle',
+      icon: require('../../img/saddle.png'), // Updated image path
+      screen: 'Saddle',
+    },
+    {
+      title: 'Drivetrain',
+      description: 'Keep your drivetrain running smoothly',
+      icon: require('../../img/drivetrain.png'), // Updated image path
+      screen: 'Drivetrain',
+    },
+    {
+      title: 'Gears and Shifters',
+      description: 'Struggling with gear shifting',
+      icon: require('../../img/gears.png'), // Updated image path
+      screen: 'Gears and Shifters',
+    },
+    {
+      title: 'Suspension (Optional)',
+      description: 'Maintain your suspension system',
+      icon: require('../../img/suspension.png'), // Updated image path
+      screen: 'Suspension (Optional)',
+    },
+    {
+      title: 'Accessories',
+      description: 'Essential bike accessories to enhance safety',
+      icon: require('../../img/Accessories.png'), // Updated image path
+      screen: 'Accessories',
+    },
   ];
 
   return (
@@ -30,17 +71,19 @@ const Guide = ({ navigation }) => {
       {/* Tutorials List */}
       <View style={styles.tutorialsList}>
         {tutorials.map((tutorial, index) => (
-          <TouchableOpacity key={index} onPress={() => navigation.navigate(tutorial.screen)}>
-            <View style={styles.tutorialItem}>
-              {/* Tutorial image */}
-              <Image source={tutorial.icon} style={styles.tutorialIcon} />
-              <View style={styles.tutorialInfo}>
-                <Text style={styles.tutorialTitle}>{tutorial.title}</Text>
-                <Text style={styles.tutorialDescription}>{tutorial.description}</Text>
-              </View>
-              {/* Chevron-right icon */}
-              <Icon name="chevron-forward" size={20} color="#333" style={styles.rightArrow} />
+          <TouchableOpacity 
+            key={index} 
+            style={styles.tutorialItem}
+            onPress={() => navigation.navigate(tutorial.screen)}
+          >
+            {/* Tutorial image */}
+            <Image source={tutorial.icon} style={styles.tutorialIcon} />
+            <View style={styles.tutorialInfo}>
+              <Text style={styles.tutorialTitle}>{tutorial.title}</Text>
+              <Text style={styles.tutorialDescription}>{tutorial.description}</Text>
             </View>
+            {/* Chevron-right icon */}
+            <Icon name="chevron-forward" size={20} color="#333" style={styles.rightArrow} />
           </TouchableOpacity>
         ))}
       </View>
@@ -61,15 +104,16 @@ const styles = StyleSheet.create({
   tutorialItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10, // Reduced padding
-    borderBottomWidth: 0, // No bottom border line
-    marginBottom: 0, // No bottom margin
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    marginBottom: 10,
   },
   tutorialIcon: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 15,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   tutorialInfo: {
     flex: 1,
@@ -82,9 +126,10 @@ const styles = StyleSheet.create({
   tutorialDescription: {
     fontSize: 14,
     color: '#666',
+    marginTop: 4,
   },
   rightArrow: {
-    marginLeft: 10, // Adjust the spacing as needed
+    marginLeft: 10,
   },
 });
 

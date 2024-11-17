@@ -1,49 +1,54 @@
 import React from 'react';
 import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const CityBikes = () => {
+  const navigation = useNavigation(); // Access navigation
+
   const cityBikesData = [
     {
       id: 1,
       name: 'Black Velo Sport Bike',
       price: 35,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      imageUrl: require('../../img/logo.png'), // Example image
     },
     {
       id: 2,
       name: 'Green Road Bike',
       price: 50,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      imageUrl: require('../../img/logo.png'), // Example image
     },
     {
-        id: 3,
-        name: 'Green Road Bike',
-        price: 50,
-        imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      id: 3,
+      name: 'Blue Hybrid Bike',
+      price: 45,
+      imageUrl: require('../../img/logo.png'), // Example image
     },
     {
-        id: 4,
-        name: 'Green Road Bike',
-        price: 50,
-        imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      id: 4,
+      name: 'Blue Hybrid Bike',
+      price: 45,
+      imageUrl: require('../../img/logo.png'), // Example image
     },
     {
-        id: 5,
-        name: 'Green Road Bike',
-        price: 50,
-        imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      id: 5,
+      name: 'Blue Hybrid Bike',
+      price: 45,
+      imageUrl: require('../../img/logo.png'), // Example image
     },
     {
-        id: 6,
-        name: 'Green Road Bike',
-        price: 50,
-        imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      id: 6,
+      name: 'Blue Hybrid Bike',
+      price: 45,
+      imageUrl: require('../../img/logo.png'), // Example image
     },
+    
+    // Add more bikes as needed
   ];
 
-  const handlePress = (item) => {
-    // Handle the bike card press, such as navigating to a detailed page or showing more info
-    console.log(`${item.name} selected!`);
+  const handlePress = (bike) => {
+    // Navigate to BikeDetails and pass bike data
+    navigation.navigate('BikeDetails', { bike });
   };
 
   const renderItem = ({ item }) => (
@@ -59,9 +64,9 @@ const CityBikes = () => {
       <FlatList
         data={cityBikesData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()} // Ensure the keyExtractor is using string values
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        contentContainerStyle={styles.listContainer} // Add padding for FlatList items
+        contentContainerStyle={styles.listContainer}
       />
     </View>
   );
@@ -72,11 +77,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
   bikeCard: {
     flex: 1,
     alignItems: 'center',
@@ -85,25 +85,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 10,
-    backgroundColor: '#fff', // Ensure a background color for the card
+    backgroundColor: '#fff',
   },
   bikeImage: {
     width: 130,
     height: 120,
     marginBottom: 10,
-    resizeMode: 'contain', // Ensures the image is properly scaled
+    resizeMode: 'contain',
   },
   bikeName: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center', // Center-align the text
+    textAlign: 'center',
   },
   bikePrice: {
     fontSize: 14,
-    color: '#2ecc71', // Green color for the price
+    color: '#2ecc71',
   },
   listContainer: {
-    paddingBottom: 10, // Add bottom padding to avoid cutting off items
+    paddingBottom: 10,
   },
 });
 
