@@ -1,49 +1,58 @@
 import React from 'react';
 import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const HybridBikes = () => {
-  const hybridBikesData = [
+const MountainBikes = () => {
+  const navigation = useNavigation();
+
+  const mountainBikesData = [
     {
       id: 1,
-      name: 'Hybrid Sport Bike',
-      price: 40,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Rocky Mountain Trail Bike',
+      price: 60,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 2,
-      name: 'Green Hybrid Bike',
-      price: 55,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Rocky Mountain Trail Bike',
+      price: 60,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 3,
-      name: 'Red Hybrid Bike',
+      name: 'Rocky Mountain Trail Bike',
       price: 60,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 4,
-      name: 'Blue Hybrid Bike',
-      price: 65,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Rocky Mountain Trail Bike',
+      price: 60,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 5,
-      name: 'Yellow Hybrid Bike',
-      price: 50,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Rocky Mountain Trail Bike',
+      price: 60,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 6,
-      name: 'Black Hybrid Bike',
-      price: 70,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Rocky Mountain Trail Bike',
+      price: 60,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
+    // Add other bikes...
   ];
 
-  const handlePress = (item) => {
-    // Handle the bike card press, such as navigating to a detailed page or showing more info
-    console.log(`${item.name} selected!`);
+  const handlePress = (bike) => {
+    navigation.navigate('BikeDetails', { bike });
   };
 
   const renderItem = ({ item }) => (
@@ -57,26 +66,18 @@ const HybridBikes = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={hybridBikesData}
+        data={mountainBikesData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()} // Ensure the keyExtractor is using string values
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        contentContainerStyle={styles.listContainer} // Add padding for FlatList items
+        contentContainerStyle={styles.listContainer}
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
+  container: { flex: 1, padding: 10 },
   bikeCard: {
     flex: 1,
     alignItems: 'center',
@@ -85,26 +86,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 10,
-    backgroundColor: '#fff', // Ensure a background color for the card
+    backgroundColor: '#fff',
   },
-  bikeImage: {
-    width: 130,
-    height: 120,
-    marginBottom: 10,
-    resizeMode: 'contain', // Ensures the image is properly scaled
-  },
-  bikeName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center', // Center-align the text
-  },
-  bikePrice: {
-    fontSize: 14,
-    color: '#2ecc71', // Green color for the price
-  },
-  listContainer: {
-    paddingBottom: 10, // Add bottom padding to avoid cutting off items
-  },
+  bikeImage: { width: 130, height: 120, marginBottom: 10, resizeMode: 'contain' },
+  bikeName: { fontSize: 16, fontWeight: 'bold', textAlign: 'center' },
+  bikePrice: { fontSize: 14, color: '#2ecc71' },
+  listContainer: { paddingBottom: 10 },
 });
 
-export default HybridBikes;
+export default MountainBikes;

@@ -8,17 +8,17 @@ const categories = [
   {
     id: 1,
     name: 'City Bike',
-    image: require('../../img/6.jpg'),
+    image: require('../../img/citybike.png'),
   },
   {
     id: 2,
     name: 'Mountain Bike',
-    image: require('../../img/6.jpg'),
+    image: require('../../img/mountainbike.png'),
   },
   {
     id: 3,
     name: 'Hybrid Bike',
-    image: require('../../img/6.jpg'),
+    image: require('../../img/hybridbike.png'),
   },
 ];
 

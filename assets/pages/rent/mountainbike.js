@@ -1,49 +1,57 @@
 import React from 'react';
 import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const MountainBikes = () => {
+  const navigation = useNavigation();
+
   const mountainBikesData = [
     {
       id: 1,
       name: 'Rocky Mountain Trail Bike',
       price: 60,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 2,
       name: 'Mud Hopper Mountain Bike',
       price: 75,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 3,
-      name: 'Peak Rider Mountain Bike',
-      price: 80,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
-    },
-    {
+      name: 'Mud Hopper Mountain Bike',
+      price: 75,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
+    },    {
       id: 4,
-      name: 'Canyon Cruiser Mountain Bike',
-      price: 85,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
-    },
-    {
+      name: 'Mud Hopper Mountain Bike',
+      price: 75,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
+    },    {
       id: 5,
-      name: 'Desert Storm MTB',
-      price: 90,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
-    },
+      name: 'Mud Hopper Mountain Bike',
+      price: 75,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
+      
+    },   
     {
       id: 6,
-      name: 'Mountain Thunder Bike',
-      price: 100,
-      imageUrl: require('../../img/logo.png'), // Using logo.png as the sample image
+      name: 'Mud Hopper Mountain Bike',
+      price: 75,
+      imageUrl: require('../../img/logo.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
+    // Add more bikes
   ];
 
-  const handlePress = (item) => {
-    // Handle the bike card press, such as navigating to a detailed page or showing more info
-    console.log(`${item.name} selected!`);
+  const handlePress = (bike) => {
+    navigation.navigate('BikeDetails', { bike });
   };
 
   const renderItem = ({ item }) => (
@@ -59,9 +67,9 @@ const MountainBikes = () => {
       <FlatList
         data={mountainBikesData}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()} // Ensure the keyExtractor is using string values
+        keyExtractor={(item) => item.id.toString()}
         numColumns={2}
-        contentContainerStyle={styles.listContainer} // Add padding for FlatList items
+        contentContainerStyle={styles.listContainer}
       />
     </View>
   );
@@ -72,12 +80,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
   bikeCard: {
     flex: 1,
     alignItems: 'center',
@@ -86,25 +88,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 10,
-    backgroundColor: '#fff', // Ensure a background color for the card
+    backgroundColor: '#fff',
   },
   bikeImage: {
     width: 130,
     height: 120,
     marginBottom: 10,
-    resizeMode: 'contain', // Ensures the image is properly scaled
+    resizeMode: 'contain',
   },
   bikeName: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center', // Center-align the text
+    textAlign: 'center',
   },
   bikePrice: {
     fontSize: 14,
-    color: '#2ecc71', // Green color for the price
+    color: '#2ecc71',
   },
   listContainer: {
-    paddingBottom: 10, // Add bottom padding to avoid cutting off items
+    paddingBottom: 10,
   },
 });
 

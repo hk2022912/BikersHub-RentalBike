@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity, Animated, ScrollView, Modal } from "react-native";
+import { StyleSheet, params, View, route, Text, Image, TouchableOpacity, Animated, ScrollView, Modal } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons"; 
 
-export default function BikeDetails() {
+export default function BikeDetails({route}) {
+  const { bike } = route.params; 
+  
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
@@ -38,12 +40,21 @@ export default function BikeDetails() {
     fadeIn();  // Trigger fade-in animation only once when the component mounts
   }, []);
 
+  const formatTime = (time) => {
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        {/* Bike Image */}
-        <Image source={require('../../img/mountainbike.png')} style={styles.bikeImage} />
-        <Text style={styles.bikeType}>Mountain Bike</Text>
+    <View style={styles.container}>
+      {/* Display the selected bike image */}
+      <Image source={bike.imageUrl} style={styles.bikeImage} />
+      <Text style={styles.bikeType}>{bike.name}</Text>
 
         {/* Date, Time Picker, and Price Section */}
         <View style={styles.pickerContainer}>
@@ -56,7 +67,7 @@ export default function BikeDetails() {
           <TouchableOpacity onPress={() => setShowTime(true)} style={styles.iconButton}>
             <MaterialIcons name="access-time" size={30} color="#3498db" />
             {time && (
-              <Text style={styles.dateTimeText}>{time.toLocaleTimeString()}</Text>
+              <Text style={styles.dateTimeText}>{formatTime(time)}</Text>
             )}
           </TouchableOpacity>
           <View style={styles.priceContainer}>
@@ -78,7 +89,7 @@ export default function BikeDetails() {
           <DateTimePicker
             value={time}
             mode="time"
-            is24Hour={true}
+            is24Hour={false}  // Use 12-hour format for AM/PM
             onChange={onTimeChange}
           />
         )}
@@ -86,9 +97,7 @@ export default function BikeDetails() {
         {/* Overview Section */}
         <Animated.View style={[styles.overviewContainer, { opacity: fadeAnim }]}>
           <Text style={styles.overviewTitle}>Overview</Text>
-          <Text style={styles.overviewText}>
-            This is a sturdy mountain bike perfect for off-road trails and outdoor adventures. It offers a smooth ride on rugged terrain.
-          </Text>
+          <Text style={styles.overviewText}>{bike.description}</Text>
         </Animated.View>
 
         {/* Payment Section */}
@@ -218,8 +227,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   bikeImage: {
-    width: "80%",
-    height: 250,
+    width: "100%",
+    height: 220,
     borderRadius: 15,
     resizeMode: "cover",
     marginBottom: 20,
@@ -280,30 +289,72 @@ const styles = StyleSheet.create({
   },
   overviewText: {
     fontSize: 15,
-    color: "#666",
+    color: 'black',
     marginTop: 10,
   },
   paymentContainer: {
-  
     width: "100%",
+    marginBottom: 20,
   },
   paymentTitle: {
-    fontSize: 21,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    marginBottom: 10,
   },
   paymentMethodButton: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 10,
     backgroundColor: "#3498db",
-    borderRadius: 10,
-    marginTop: 10,
+    padding: 15,
+    borderRadius: 5,
   },
   paymentButtonText: {
-    fontSize: 20,
+    fontSize: 16,
     color: "#fff",
+  },
+  renterContainer: {
+    flexDirection: "row",
+    width: "100%",
+    marginBottom: 20,
+  },
+  renterImageContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+    marginRight: 10,
+  },
+  renterImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  renterTextContainer: {
+    justifyContent: "center",
+  },
+  renterName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  renterTitle: {
+    fontSize: 14,
+    color: "#777",
+  },
+  rentButton: {
+    backgroundColor: "#2ecc71",
+    padding: 15,
+    borderRadius: 5,
+    marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  rentButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
   },
   modalBackground: {
     flex: 1,
@@ -348,48 +399,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
-  renterContainer: {
-    flexDirection: "row",
-    marginTop: 20,
-    width: "100%",
-    padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-  },
-  renterImageContainer: {
-    marginRight: 20,
-  },
-  renterImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  renterTextContainer: {
-    justifyContent: "center",
-  },
-  renterName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  renterTitle: {
-    fontSize: 14,
-    color: "#7f8c8d",
-  },
-  rentButton: {
-    backgroundColor: "#2ecc71",
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 20,
-    marginTop: 40,
-    width: '100%',
-  },
-  rentButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: 'center',
-    
-  },
   successModalContainer: {
     backgroundColor: "#fff",
     padding: 30,
@@ -398,15 +407,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   successTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#2ecc71",
-    marginTop: 10,
+    color: "#333",
+    marginTop: 20,
   },
   successMessage: {
     fontSize: 16,
-    textAlign: "center",
-    color: "#666",
-    marginTop: 10,
+    color: "#777",
+    marginVertical: 10,
   },
 });

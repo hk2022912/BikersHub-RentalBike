@@ -3,52 +3,54 @@ import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react
 import { useNavigation } from '@react-navigation/native';
 
 const CityBikes = () => {
-  const navigation = useNavigation(); // Access navigation
+  const navigation = useNavigation();
 
   const cityBikesData = [
     {
       id: 1,
       name: 'Black Velo Sport Bike',
       price: 35,
-      imageUrl: require('../../img/logo.png'), // Example image
+      imageUrl: require('../../img/city1.jpg'),
+      description: 'A fast and stylish bike perfect for city commutes.',
     },
     {
       id: 2,
       name: 'Green Road Bike',
       price: 50,
-      imageUrl: require('../../img/logo.png'), // Example image
+      imageUrl: require('../../img/city2.png'),
+      description: 'Lightweight and durable, ideal for long rides.',
     },
     {
       id: 3,
       name: 'Blue Hybrid Bike',
       price: 45,
-      imageUrl: require('../../img/logo.png'), // Example image
+      imageUrl: require('../../img/city3.png'),
+      description: 'Versatile hybrid bike designed for both streets and trails.',
     },
     {
       id: 4,
-      name: 'Blue Hybrid Bike',
-      price: 45,
-      imageUrl: require('../../img/logo.png'), // Example image
+      name: 'Yellow Commuter Bike',
+      price: 40,
+      imageUrl: require('../../img/city4.png'),
+      description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 5,
-      name: 'Blue Hybrid Bike',
-      price: 45,
-      imageUrl: require('../../img/logo.png'), // Example image
+      name: 'Yellow Commuter Bike',
+      price: 40,
+      imageUrl: require('../../img/city5.png'),
+      description: 'A reliable commuter bike with excellent comfort.',
     },
     {
       id: 6,
-      name: 'Blue Hybrid Bike',
-      price: 45,
-      imageUrl: require('../../img/logo.png'), // Example image
+      name: 'Yellow Commuter Bike',
+      price: 40,
+      imageUrl: require('../../img/city6.png'),
+      description: 'Comfortable and affordable bike for everyday use.',
     },
-    
-    // Add more bikes as needed
   ];
-
   const handlePress = (bike) => {
-    // Navigate to BikeDetails and pass bike data
-    navigation.navigate('BikeDetails', { bike });
+    navigation.navigate('BikeDetails', { bike }); // Pass the selected bike to the BikeDetails screen
   };
 
   const renderItem = ({ item }) => (
