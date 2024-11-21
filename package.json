@@ -2,8 +2,10 @@
   "name": "rentalapp",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
+  "type": "commonjs",
   "scripts": {
     "start": "expo start",
+    "start-server": "node -r @babel/register server.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -15,11 +17,20 @@
     "@react-native-community/geolocation": "^3.4.0",
     "@react-navigation/native": "^7.0.0",
     "@react-navigation/stack": "^7.0.0",
+    "@stripe/stripe-react-native": "^0.40.0",
+    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "expo": "^52.0.0",
     "expo-image-picker": "~16.0.2",
     "expo-location": "~18.0.1",
     "expo-status-bar": "~2.0.0",
+    "express": "^4.21.1",
     "leaflet": "^1.9.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-leaflet": "^4.2.1",
@@ -38,5 +49,9 @@
   "devDependencies": {
     "@babel/core": "^7.25.2"
   },
-  "private": true
+  "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

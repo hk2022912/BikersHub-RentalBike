@@ -1,9 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './assets/pages/login'; // Adjust path if necessary
-import Register from './assets/pages/register'; // Adjust path if necessary
-import Welcome from './assets/pages/welcome'; // Make sure the path is correct
+import Login from './assets/pages/login/login'; // Adjust path if necessary
+import Register from './assets/pages/register/register';
+import LogRes from './assets/pages/register/logres';
+import Welcome from './assets/pages/welcome/welcome'; // Make sure the path is correct
 import Home from './assets/pages/home'; // Import the Home screen
 import UserMap from './assets/pages/map/map'; // Import the Map screen
 import Rent from './assets/pages/rent/rent'; // Import the Rent screen
@@ -43,6 +44,14 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={Login}
+          options={{
+            headerShown: true, // Shows the header for Login screen
+            headerTitleAlign: 'center', // Center the title
+          }}
+        />
+        <Stack.Screen
+          name="LogRes"
+          component={LogRes}
           options={{
             headerShown: true, // Shows the header for Login screen
             headerTitleAlign: 'center', // Center the title

@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 5,
   },
   logoImage: { width: 40, height: 20 },
   rightIcons: { flexDirection: 'row' },

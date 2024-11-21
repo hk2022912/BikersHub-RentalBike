@@ -15,14 +15,14 @@ const MountainBikes = () => {
     },
     {
       id: 2,
-      name: 'Rocky Mountain Trail Bike',
+      name: 'Rocky Mountain Roads Bike',
       price: 60,
       imageUrl: require('../../img/logo.png'),
       description: 'Comfortable commuter bike for daily travel.',
     },
     {
       id: 3,
-      name: 'Rocky Mountain Trail Bike',
+      name: 'Rocky Mountain Bike',
       price: 60,
       imageUrl: require('../../img/logo.png'),
       description: 'Comfortable commuter bike for daily travel.',

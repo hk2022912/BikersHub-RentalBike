@@ -71,9 +71,10 @@ export default function BikeDetails({route}) {
             )}
           </TouchableOpacity>
           <View style={styles.priceContainer}>
-            <Text style={styles.priceText}>Price</Text>
-            <Text style={styles.price}>₱50</Text>
+              <Text style={styles.priceText}>Price</Text>
+              <Text style={styles.price}>₱{bike.price}</Text>
           </View>
+
         </View>
 
         {/* Show DateTimePicker only if visible */}
@@ -276,7 +277,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: "red",
   },
   overviewContainer: {
     marginBottom: 30,
