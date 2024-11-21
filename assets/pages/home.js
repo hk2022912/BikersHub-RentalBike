@@ -89,20 +89,32 @@ export default function HomeScreen({ navigation }) {
       </View>
 
 
-     {/* Our Services Section */}
+{/* Our Services Section */}
 <View style={styles.servicesContainer}>
   <Text style={styles.sectionTitle}>Our Services</Text>
   <View style={styles.servicesRow}>
-    <TouchableOpacity style={styles.serviceItem}>
+    <TouchableOpacity
+      style={styles.serviceItem}
+      onPress={() => navigation.navigate('CityBikes')}
+    >
       <Text style={styles.serviceText}>City Bike</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.serviceItem}>
+    <TouchableOpacity
+      style={styles.serviceItem}
+      onPress={() => navigation.navigate('MountainBikes')}
+    >
       <Text style={styles.serviceText}>Mountain Bike</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.serviceItem}>
+    <TouchableOpacity
+      style={styles.serviceItem}
+      onPress={() => navigation.navigate('HybridBikes')}
+    >
       <Text style={styles.serviceText}>Hybrid Bike</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.serviceItem}>
+    <TouchableOpacity
+      style={styles.serviceItem}
+      onPress={() => navigation.navigate('BikeAccessories')}
+    >
       <Text style={styles.serviceText}>Accessories</Text>
     </TouchableOpacity>
   </View>

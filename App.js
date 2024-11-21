@@ -29,6 +29,7 @@ import Recovery from './assets/pages/recovery'; // Adjust path if necessary
 import Profile from './assets/pages/profile/profile'; // Adjust path if necessary
 import Notification from './assets/pages/notification/notification'; // Import Notification screen
 import BikeDetails from './assets/pages/rent/bikedetails'; // Import BikeDetails screen
+import BikeAccessories from './assets/pages/accessories/accessories';
 
 const Stack = createStackNavigator();
 
@@ -288,6 +289,15 @@ export default function App() {
           component={SafetyTips}
           options={{
             title: 'Safety Tips',  // Title for the Maintenance Tips screen
+            headerShown: true,
+            headerTitleAlign: 'center', // Center the title
+          }}
+        />
+         <Stack.Screen
+          name="BikeAccessories"
+          component={BikeAccessories}
+          options={{
+            title: 'Bike Accessories',  // Title for the Accessories screen
             headerShown: true,
             headerTitleAlign: 'center', // Center the title
           }}
