@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  Modal,
-} from 'react-native';
+import {View,Text,TextInput,StyleSheet,TouchableOpacity,Image, Alert, KeyboardAvoidingView, Platform, Modal,} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from 'react-native-vector-icons'; // Import the icons
