@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View,Text,TextInput,StyleSheet,TouchableOpacity,Image, Alert, KeyboardAvoidingView, Platform, Modal,} from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from 'react-native-vector-icons'; // Import the icons
@@ -17,10 +17,9 @@ const Profile = ({ navigation }) => {
     const fetchUserData = async () => {
       const userData = await AsyncStorage.getItem('user');
       if (userData) {
-        const { fullName, email, phoneNumber } = JSON.parse(userData);
+        const { fullName, email } = JSON.parse(userData);
         setName(fullName);
         setEmail(email);
-        setPhoneNumber(phoneNumber || '');
       }
     };
 
@@ -50,11 +49,6 @@ const Profile = ({ navigation }) => {
     }
   };
 
-  const confirmLogout = async () => {
-    setModalVisible(false);
-    navigation.navigate('Login');
-  };
-
   const changeAvatar = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -77,6 +71,15 @@ const Profile = ({ navigation }) => {
   const resetAvatar = () => {
     setAvatar(require('../../img/6.jpg'));
     Alert.alert('Avatar Reset', 'Your avatar has been reset to default.');
+  };
+
+  const Logout = () => {
+    AsyncStorage.removeItem('user') // Clear user data
+      .then(() => {
+        setModalVisible(false);
+        navigation.replace('Login'); // Navigate to the login screen
+      })
+      .catch(() => Alert.alert('Error', 'Failed to log out.'));
   };
 
   return (
@@ -152,7 +155,7 @@ const Profile = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.modalButton, styles.modalButtonConfirm]}
-                onPress={confirmLogout}
+                onPress={Logout}
               >
                 <Text style={styles.modalButtonText}>Yes</Text>
               </TouchableOpacity>

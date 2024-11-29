@@ -29,7 +29,9 @@ import Recovery from './assets/pages/recovery'; // Adjust path if necessary
 import Profile from './assets/pages/profile/profile'; // Adjust path if necessary
 import Notification from './assets/pages/notification/notification'; // Import Notification screen
 import BikeDetails from './assets/pages/rent/bikedetails'; // Import BikeDetails screen
-import BikeAccessories from './assets/pages/accessories/accessories';
+import AccessoriesBike from './assets/pages/accessories/BikeAccessories';
+import AccessoriesDetails from './assets/pages/accessories/AccessoriesDetails';
+
 
 const Stack = createStackNavigator();
 
@@ -294,8 +296,17 @@ export default function App() {
           }}
         />
          <Stack.Screen
-          name="BikeAccessories"
-          component={BikeAccessories}
+          name="AccessoriesDetails"
+          component={AccessoriesDetails}
+          options={{
+            title: 'Accessories Details',  // Title for the Accessories screen
+            headerShown: true,
+            headerTitleAlign: 'center', // Center the title
+          }}
+        />
+         <Stack.Screen
+          name="AccessoriesBike"
+          component={AccessoriesBike}
           options={{
             title: 'Bike Accessories',  // Title for the Accessories screen
             headerShown: true,
