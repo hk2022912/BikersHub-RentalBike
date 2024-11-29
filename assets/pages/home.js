@@ -1,10 +1,8 @@
-// HomeScreen.js
-
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const CarCard = ({ image, title, description, price, discount }) => {
+const CarCard = ({ image, title, description, price, discount, onPress }) => {
   return (
     <View style={styles.carCard}>
       <Image source={image} style={styles.carImage} />
@@ -13,7 +11,7 @@ const CarCard = ({ image, title, description, price, discount }) => {
         <Text style={styles.carDescription}>{description}</Text>
         <Text style={styles.carPrice}>₱ {price} - per day</Text>
         <Text style={styles.carDiscount}>{discount}</Text>
-        <TouchableOpacity style={styles.rentButton}>
+        <TouchableOpacity style={styles.rentButton} onPress={onPress}>
           <Text style={styles.rentButtonText}>Rent Now</Text>
         </TouchableOpacity>
       </View>
@@ -25,58 +23,72 @@ export default function HomeScreen({ navigation }) {
   const hotDeals = [
     {
       id: '1',
-      image: require('../img/logo.png'),
-      title: 'Honda Amaze',
-      description: 'Manual / Automatic',
-      price: '80.00',
-      discount: '30% Off',
+      image: require('../img/city1.jpg'),
+      title: 'Black Velo Sport Bike',
+      description: 'A sleek and lightweight city bike designed for speed and efficiency, perfect for urban commuting and leisure rides.',
+      price: '35',
+      discount: '10% Off',
     },
     {
       id: '2',
-      image: require('../img/logo.png'),
-      title: 'Toyota Innova Crysta',
-      description: 'Automatic',
-      price: '80.00',
+      image: require('../img/hybrid4.jpg'),
+      description: 'Compact and foldable design, ideal for adventurers seeking portability without compromising performance.',
+      title: 'Folding Mountain Bike',
+      price: '90',
       discount: '20% Off',
     },
     {
       id: '3',
-      image: require('../img/logo.png'),
-      title: 'Suzuki Swift',
-      description: 'Manual',
-      price: '100.00',
-      discount: '25% Off',
+      image: require('../img/mountain3.jpg'),
+      title: 'Rockrider ST100',
+      description: 'An affordable and reliable mountain bike, ideal for beginners and leisure riders who enjoy both paved paths and gentle trails.',
+      price: '95',
+      discount: '20% Off',
     },
     {
       id: '4',
-      image: require('../img/logo.png'),
-      title: 'Hyundai Creta',
-      description: 'Automatic',
-      price: '50.00',
+      image: require('../img/mountain5.jpg'),
+      title: 'Marin Bolinas Ridge1',
+      description: 'Perfect for leisure and commuting, this bike features wide tires for grip and a sturdy frame for lasting durability.',
+      price: '85',
       discount: '15% Off',
     },
   ];
+
+  const handlePress = (item) => {
+    navigation.navigate('BikeDetails', { bike: item });
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handlePress(item)} style={styles.bikeCard}>
+      <Image source={item.imageUrl} style={styles.bikeImage} />
+      <Text style={styles.bikeName}>{item.name}</Text>
+      <Text style={styles.bikePrice}>₱{item.price}</Text>
+    </TouchableOpacity>
+  );
+
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={require('../img/logo.png')} style={styles.logoImage} />
-        </TouchableOpacity>
+      <View>
+    <Image source={require('../img/logo.png')} style={styles.logoImage} />
+      </View>
         <View style={styles.rightIcons}>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={() => navigation.navigate('Notification')} // Navigate to Notification page
-          >
-            <Ionicons name="notifications" size={24} color="#333" />
-          </TouchableOpacity>
+        <TouchableOpacity
+       style={[styles.iconButton]} // Add spacing if needed
+       onPress={() => navigation.navigate('Notification')}
+>
+      <Ionicons name="notifications" size={24} color="#333" />
+     </TouchableOpacity>
+
 
           <TouchableOpacity
               style={styles.iconButton}
               onPress={() => navigation.navigate('Profile')} // Navigate to the Profile page
             >
-              <Image source={require('../img/logo.png')} style={styles.avatar} />
+              <Image source={require('../img/profileicon.png')} style={styles.avatar} />
             </TouchableOpacity>
         </View>
       </View>
@@ -120,20 +132,21 @@ export default function HomeScreen({ navigation }) {
   </View>
 </View>
 
-
         {/* Hot Deals Section */}
-<View style={styles.hotDealsContainer}>
-  <Text style={styles.sectionTitle}>Hot Deals</Text>
-  <View style={styles.cardGrid}>
-    {hotDeals.map(deal => (
-      <CarCard
-        key={deal.id}
-        image={deal.image}
-        title={deal.title}
-        description={deal.description}
-        price={deal.price}
-        discount={deal.discount}
-      />
+        <View style={styles.hotDealsContainer}>
+        <Text style={styles.sectionTitle}>Hot Deals</Text>
+        <View style={styles.cardGrid}>
+          {hotDeals.map(deal => (
+            <CarCard
+              key={deal.id}
+              image={deal.image}
+              title={deal.title}
+              description={deal.description}
+              price={deal.price}
+              discount={deal.discount}
+              onPress={() => handlePress(deal)} // Pass the handlePress function
+            />
+
     ))}
   </View>
 </View>
@@ -175,12 +188,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 20,
   },
-  logoImage: { width: 40, height: 20 },
+  logoImage: { width: 50, height: 40 },
   rightIcons: { flexDirection: 'row' },
-  iconButton: { marginHorizontal: 5 },
-  avatar: { width: 30, height: 30, borderRadius: 15 },
+  iconButton: {width: 50, height: 40, alignItems: 'center', justifyContent: 'center'},
+  avatar: { width: 50, height: 40, borderRadius: 15 },
   contentContainer: { paddingHorizontal: 20, paddingBottom: 20 },
   
   offerContainer: {
@@ -297,4 +310,6 @@ carImage: {
   },
   footerItem: { alignItems: 'center' },
   footerText: { fontSize: 12, color: '#007BFF' },
-});
+
+  });
+  

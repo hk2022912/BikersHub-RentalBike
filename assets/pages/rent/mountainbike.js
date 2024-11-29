@@ -8,47 +8,47 @@ const MountainBikes = () => {
   const mountainBikesData = [
     {
       id: 1,
-      name: 'Rocky Mountain Trail Bike',
+      name: 'Trek Dual Sport 2',
       price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      imageUrl: require('../../img/mountain1.jpg'),
+      description: 'A versatile hybrid bike with front suspension, perfect for commuting and light trail rides, offering a smooth and comfortable experience.',
     },
     {
       id: 2,
-      name: 'Mud Hopper Mountain Bike',
-      price: 75,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Giant Talon 3',
+      price: 85,
+      imageUrl: require('../../img/mountain2.jpg'),
+      description: 'Designed for light trails and city streets, this bike features a lightweight aluminum frame and excellent handling for a smooth ride.',
     },
     {
       id: 3,
-      name: 'Mud Hopper Mountain Bike',
-      price: 75,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
-    },    {
+      name: 'Rockrider ST100',
+      price: 95,
+      imageUrl: require('../../img/mountain3.jpg'),
+      description: 'An affordable and reliable mountain bike, ideal for beginners and leisure riders who enjoy both paved paths and gentle trails.',
+    },
+    {
       id: 4,
-      name: 'Mud Hopper Mountain Bike',
+      name: 'Co-op Cycles DRT 1.1',
       price: 75,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
-    },    {
+      imageUrl: require('../../img/mountain4.jpg'),
+      description: 'Built for durability and control, this bike is great for casual trail riding and commuting, offering a stable and comfortable ride.',
+    },
+    {
       id: 5,
-      name: 'Mud Hopper Mountain Bike',
-      price: 75,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
-      
-    },   
+      name: 'Marin Bolinas Ridge 1',
+      price: 85,
+      imageUrl: require('../../img/mountain5.jpg'),
+      description: 'Perfect for leisure and commuting, this bike features wide tires for grip and a sturdy frame for lasting durability.',
+    },
     {
       id: 6,
-      name: 'Mud Hopper Mountain Bike',
-      price: 75,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Schwinn High Timber',
+      price: 65,
+      imageUrl: require('../../img/mountain6.jpg'),
+      description: 'A classic mountain bike with a comfortable seat and wide tires, ideal for both casual rides and everyday commutes.',
     },
-    // Add more bikes
-  ];
+  ];  
 
   const handlePress = (bike) => {
     navigation.navigate('BikeDetails', { bike });

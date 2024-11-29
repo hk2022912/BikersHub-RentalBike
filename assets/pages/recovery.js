@@ -7,79 +7,82 @@ const Recovery = () => {
   const [otp, setOtp] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
 
   // Function to generate a random OTP (6 digits)
-  const generateOtp = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
+  const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
 
-  // Function to send OTP to email (this is a mock function, replace with API call)
+  // Function to send OTP to email (this is a mock function, replace with actual API call)
   const sendOtpToEmail = (email) => {
     const otp = generateOtp();
     setGeneratedOtp(otp); // Save the OTP for later verification
-    
-    // Simulate sending OTP via email
-    // Here you would typically make an API call to your backend service to send the OTP email
-    // For example, axios.post('api/send-otp', { email, otp });
-
-    console.log(`Sending OTP ${otp} to email: ${email}`); // This simulates sending the OTP to the email
+    console.log(`Sending OTP ${otp} to email: ${email}`);
     setOtpSent(true); // Update the state to indicate OTP is sent
   };
 
   // Function to verify the OTP entered by the user
   const verifyOtp = () => {
     if (otp === generatedOtp) {
+      setOtpVerified(true);
       Alert.alert('Success', 'OTP verified successfully.', [
-        { text: 'OK', onPress: () => navigation.navigate('Login') },
+        { text: 'OK', onPress: () => {} },
       ]);
     } else {
       Alert.alert('Error', 'Invalid OTP. Please try again.');
     }
   };
 
-  // Function to handle the verify email action
-  const handleVerify = () => {
-    if (!email) {
-      Alert.alert('Error', 'Please enter your email address.');
+  // Function to handle password change
+  const handleChangePassword = () => {
+    if (!newPassword || !confirmPassword) {
+      Alert.alert('Error', 'Please enter both the new password and confirm password.');
       return;
     }
 
-    // Call the send OTP function
-    sendOtpToEmail(email);
-    Alert.alert('Success', `An OTP has been sent to ${email}.`);
+    if (newPassword !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match.');
+      return;
+    }
+
+    // Proceed with password change (replace with actual API call)
+    Alert.alert('Success', 'Your password has been changed successfully.', [
+      { text: 'OK', onPress: () => navigation.navigate('Login') },
+    ]);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image
-          source={require('../img/logo.png')}
-          style={styles.logoImage}
-        />
+        <Image source={require('../img/logo.png')} style={styles.logoImage} />
         <Text style={styles.logoText}>Forgot Password?</Text>
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.subtitle}>
-          Please enter the email address associated with your account.
-        </Text>
+        <Text style={styles.subtitle}>Please enter your email address.</Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your email"
-          placeholderTextColor="black"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
+        {/* Email Entry */}
+        {!otpSent && !otpVerified && (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your email"
+              placeholderTextColor="black"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TouchableOpacity style={styles.button} onPress={() => sendOtpToEmail(email)}>
+              <Text style={styles.buttonText}>Send OTP</Text>
+            </TouchableOpacity>
+          </>
+        )}
 
-        {!otpSent ? (
-          <TouchableOpacity style={styles.button} onPress={handleVerify}>
-            <Text style={styles.buttonText}>Verify</Text>
-          </TouchableOpacity>
-        ) : (
+        {/* OTP Entry */}
+        {otpSent && !otpVerified && (
           <>
             <Text style={styles.subtitle}>Enter the OTP sent to your email:</Text>
             <TextInput
@@ -92,6 +95,32 @@ const Recovery = () => {
             />
             <TouchableOpacity style={styles.button} onPress={verifyOtp}>
               <Text style={styles.buttonText}>Verify OTP</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {/* New Password Entry */}
+        {otpVerified && (
+          <>
+            <Text style={styles.subtitle}>Create a new password:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="New Password"
+              placeholderTextColor="black"
+              value={newPassword}
+              onChangeText={setNewPassword}
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              placeholderTextColor="black"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry
+            />
+            <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
+              <Text style={styles.buttonText}>Change Password</Text>
             </TouchableOpacity>
           </>
         )}

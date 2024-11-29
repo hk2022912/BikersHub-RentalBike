@@ -1,35 +1,75 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Modal,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import { MaterialCommunityIcons } from 'react-native-vector-icons'; // Import the icons
 
 const Profile = ({ navigation }) => {
-  const [name, setName] = useState('John Doe');
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [phone, setPhone] = useState('123-456-7890');
-  const [avatar, setAvatar] = useState(require('../../img/6.jpg')); // Default image
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [avatar, setAvatar] = useState(require('../../img/profileicon.png'));
   const [isEditing, setIsEditing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  // Toggle editing mode
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userData = await AsyncStorage.getItem('user');
+      if (userData) {
+        const { fullName, email, phoneNumber } = JSON.parse(userData);
+        setName(fullName);
+        setEmail(email);
+        setPhoneNumber(phoneNumber || '');
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const saveProfile = async () => {
+    try {
+      const updatedUserData = JSON.stringify({
+        fullName: name,
+        email,
+        phoneNumber,
+      });
+      await AsyncStorage.setItem('user', updatedUserData);
+      setIsEditing(false);
+      Alert.alert('Profile Updated', 'Your changes have been saved.');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to save profile changes.');
+    }
+  };
+
   const toggleEdit = () => {
-    setIsEditing(!isEditing);
+    if (isEditing) {
+      saveProfile();
+    } else {
+      setIsEditing(true);
+    }
   };
 
-  // Save the profile changes
-  const saveProfile = () => {
-    setIsEditing(false);
-  };
-
-  // Logout function
-  const handleLogout = () => {
+  const confirmLogout = async () => {
+    setModalVisible(false);
     navigation.navigate('Login');
   };
 
-  // Change avatar image
   const changeAvatar = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
     if (!permissionResult.granted) {
-      Alert.alert("Permission Denied", "You need to enable permissions to access photos.");
+      Alert.alert('Permission Denied', 'You need to enable permissions to access photos.');
       return;
     }
 
@@ -45,24 +85,24 @@ const Profile = ({ navigation }) => {
     }
   };
 
+  const resetAvatar = () => {
+    setAvatar(require('../../img/6.jpg'));
+    Alert.alert('Avatar Reset', 'Your avatar has been reset to default.');
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.content}>
-        {/* Avatar and Welcome Message */}
         <View style={styles.avatarRow}>
           <TouchableOpacity onPress={changeAvatar}>
-            <Image
-              source={avatar}
-              style={styles.avatar}
-            />
+            <Image source={avatar} style={styles.avatar} />
           </TouchableOpacity>
           <Text style={styles.welcomeText}>Hello, {name}!</Text>
         </View>
 
-        {/* Editable fields */}
         <Text style={styles.label}>Name:</Text>
         <TextInput
           style={[styles.input, isEditing ? styles.editable : styles.nonEditable]}
@@ -80,26 +120,57 @@ const Profile = ({ navigation }) => {
           keyboardType="email-address"
         />
 
-        <Text style={styles.label}>Phone:</Text>
+        <Text style={styles.label}>Phone Number:</Text>
         <TextInput
           style={[styles.input, isEditing ? styles.editable : styles.nonEditable]}
-          value={phone}
-          onChangeText={setPhone}
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
           editable={isEditing}
           keyboardType="phone-pad"
         />
-      </View>
 
-      {/* Buttons at the bottom */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={isEditing ? saveProfile : toggleEdit}>
-          <Text style={styles.buttonText}>{isEditing ? 'Save' : 'Edit Profile'}</Text>
+        <TouchableOpacity style={styles.button} onPress={toggleEdit}>
+          <MaterialCommunityIcons
+            name={isEditing ? 'content-save' : 'pencil'}
+            size={20}
+            color="#fff"
+            style={styles.icon}
+          />
+          <Text style={styles.buttonText}>{isEditing ? 'Save Changes' : 'Edit Profile'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Log Out</Text>
+        <TouchableOpacity style={styles.buttonLogout} onPress={() => setModalVisible(true)}>
+          <MaterialCommunityIcons name="logout" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+            <View style={styles.modalButtonRow}>
+              <TouchableOpacity
+                style={styles.modalButton}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.modalButtonText}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonConfirm]}
+                onPress={confirmLogout}
+              >
+                <Text style={styles.modalButtonText}>Yes</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };
@@ -107,82 +178,114 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7', // Subtle off-white background
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    padding: 20,
   },
   content: {
-    flex: 1,
-    top: 30,
-    padding: 20,
-    alignItems: 'center', // Center all items
+    alignItems: 'center',
   },
   avatarRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   avatar: {
-    width: 150,
-    height: 140,
-    borderRadius: 80,
-    borderWidth: 3,
-    borderColor: '#007BFF',
-    marginRight: 15,
+    width: 200,
+    height: 150,
+    borderRadius: 50,
+    marginBottom: 15,
   },
   welcomeText: {
-    fontSize: 22,
-    fontWeight: '500',
-    color: '#333',
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   label: {
     fontSize: 16,
-    color: '#333',
-    marginBottom: 8,
-    textAlign: 'left',
-    width: '100%',
+    marginBottom: 5,
   },
   input: {
-    fontSize: 16,
-    padding: 12,
-    marginBottom: 20,
     width: '100%',
-    borderRadius: 10,
-    backgroundColor: '#fff',
+    height: 50,
     borderWidth: 1,
     borderColor: '#ddd',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    marginBottom: 15,
   },
   editable: {
-    backgroundColor: '#f9f9f9', // Lighter input when editable
+    backgroundColor: '#f9f9f9',
   },
   nonEditable: {
-    backgroundColor: '#f0f0f0', // Grayed-out background when non-editable
-  },
-  buttonContainer: {
-    justifyContent: 'flex-end', 
-    paddingBottom: 20, 
-    width: '100%',
+    backgroundColor: '#f1f1f1',
   },
   button: {
-    height: 50,
-    backgroundColor: '#007BFF',
-    justifyContent: 'center',
+    backgroundColor: '#1E90FF',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: 150,
+    height: 45,
     alignItems: 'center',
-    borderRadius: 25,
-    marginVertical: 10,
-    width: '70%',
-    opacity: 0.9, // Slightly transparent for a modern feel
-    alignSelf: 'center',
+    flexDirection: 'row', // Align icon and text in a row
+    justifyContent: 'center',
   },
-  logoutButton: {
-    backgroundColor: '#FF3B30', // Red for logout
+  buttonLogout: {
+    backgroundColor: '#FF4D4D',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: 150,
+    height: 45,
+    alignItems: 'center',
+    flexDirection: 'row', // Align icon and text in a row
+    justifyContent: 'center',
+  },
+  icon: {
+    marginRight: 10, // Space between icon and text
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  modalButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    backgroundColor: '#ddd',
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 5,
+  },
+  modalButtonConfirm: {
+    backgroundColor: '#FF4D4D',
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

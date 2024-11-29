@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
   const handleLogin = async () => {
     if (username && password) {
       try {
-        const response = await axios.post('http://192.168.1.9:3001/login', {
+        const response = await axios.post('http://192.168.1.10:3001/login', {
           email: username, // Assuming `username` is the email
           password,
         });
