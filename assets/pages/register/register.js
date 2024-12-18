@@ -12,8 +12,6 @@ import {
   Alert,
   Modal,
 } from "react-native";
-import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Register = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -61,31 +59,9 @@ const Register = ({ navigation }) => {
     return true;
   };
 
-  // Save user data after successful registration
-  const handleRegister = async () => {
+  const handleRegister = () => {
     if (validateForm()) {
-      try {
-        const response = await axios.post("http://192.168.1.10:3001/register", {
-          fullName: form.fullName,
-          email: form.email,
-          password: form.password,
-        });
-
-        if (response.status === 201) {
-          // Save user details to AsyncStorage
-          await AsyncStorage.setItem('user', JSON.stringify({
-            fullName: form.fullName,
-            email: form.email,
-          }));
-
-          setModalVisible(true); // Show modal on success
-        } else {
-          Alert.alert("Error", "Registration failed.");
-        }
-      } catch (error) {
-        console.error("Registration error:", error.response?.data || error.message);
-        Alert.alert("Error", error.response?.data?.error || "An error occurred during registration.");
-      }
+      setModalVisible(true); // Show modal on success
     }
   };
 
@@ -221,7 +197,6 @@ const Register = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -332,22 +307,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
   },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  modalButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    width: "45%",
-  },
   modalButtonYes: {
     backgroundColor: "#1E90FF",
-  },
-  modalButtonNo: {
-    backgroundColor: "#ddd",
   },
   modalButtonText: {
     color: "#fff",
