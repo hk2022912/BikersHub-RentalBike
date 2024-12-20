@@ -12,8 +12,11 @@ import {
   Alert,
   Modal,
 } from "react-native";
+<<<<<<< HEAD
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage'
+=======
+>>>>>>> origin/master
 
 const Register = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -61,6 +64,7 @@ const Register = ({ navigation }) => {
     return true;
   };
 
+<<<<<<< HEAD
   // Save user data after successful registration
   const handleRegister = async () => {
     if (validateForm()) {
@@ -86,6 +90,11 @@ const Register = ({ navigation }) => {
         console.error("Registration error:", error.response?.data || error.message);
         Alert.alert("Error", error.response?.data?.error || "An error occurred during registration.");
       }
+=======
+  const handleRegister = () => {
+    if (validateForm()) {
+      setModalVisible(true); // Show modal on success
+>>>>>>> origin/master
     }
   };
 
@@ -221,7 +230,6 @@ const Register = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -335,22 +343,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: 'center',
   },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  modalButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    width: "45%",
-  },
   modalButtonYes: {
     backgroundColor: "#1E90FF",
-  },
-  modalButtonNo: {
-    backgroundColor: "#ddd",
   },
   modalButtonText: {
     color: "#fff",

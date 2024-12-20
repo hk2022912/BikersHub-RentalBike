@@ -10,9 +10,14 @@ const CityBikes = () => {
       id: 1,
       name: 'Black Velo Sport Bike',
       price: 35,
+<<<<<<< HEAD
       imageUrl: require('../../img/city1.jpg'), // Ensure the path is correct
       description: 'A sleek and lightweight city bike designed for speed and efficiency, perfect for urban commuting and leisure rides.',
       status: 'available',
+=======
+      imageUrl: require('../../img/city1.jpg'),
+      description: 'A sleek and lightweight city bike designed for speed and efficiency, perfect for urban commuting and leisure rides.',
+>>>>>>> origin/master
     },
     {
       id: 2,
@@ -34,15 +39,20 @@ const CityBikes = () => {
       id: 4,
       name: 'Sixthreezero EVRYjourney Hybrid Cruiser',
       price: 40,
+<<<<<<< HEAD
       imageUrl: require('../../img/city4.png'),
       description: 'A stylish, comfortable bike with a step-through frame, ideal for relaxed city rides and short commutes.',
       status: 'available',
+=======
+      imageUrl: require('../../img/city4.jpg'),
+      description: 'A stylish, comfortable bike with a step-through frame, ideal for relaxed city rides and short commutes.',
+>>>>>>> origin/master
     },
     {
       id: 5,
       name: 'Priority Classic Plus',
       price: 40,
-      imageUrl: require('../../img/city5.png'),
+      imageUrl: require('../../img/city5.jpg'),
       description: 'A reliable commuter bike with excellent comfort.',
       status: 'available',
     },

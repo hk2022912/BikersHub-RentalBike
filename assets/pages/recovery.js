@@ -13,6 +13,7 @@ const Recovery = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
 
+<<<<<<< HEAD
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -39,10 +40,33 @@ const Recovery = () => {
     } catch (error) {
       console.error('Error sending OTP:', error);
       Alert.alert('Error', 'Failed to send OTP. Please try again later.');
+=======
+  // Function to generate a random OTP (6 digits)
+  const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+  // Function to send OTP to email (this is a mock function, replace with actual API call)
+  const sendOtpToEmail = (email) => {
+    const otp = generateOtp();
+    setGeneratedOtp(otp); // Save the OTP for later verification
+    console.log(`Sending OTP ${otp} to email: ${email}`);
+    setOtpSent(true); // Update the state to indicate OTP is sent
+  };
+
+  // Function to verify the OTP entered by the user
+  const verifyOtp = () => {
+    if (otp === generatedOtp) {
+      setOtpVerified(true);
+      Alert.alert('Success', 'OTP verified successfully.', [
+        { text: 'OK', onPress: () => {} },
+      ]);
+    } else {
+      Alert.alert('Error', 'Invalid OTP. Please try again.');
+>>>>>>> origin/master
     }
   };
   
 
+<<<<<<< HEAD
   const verifyOtp = async () => {
     try {
       const response = await axios.post('http://192.168.1.9:3001/verify-otp', { email, otp });
@@ -61,6 +85,10 @@ const Recovery = () => {
   
 
   const handleChangePassword = async () => {
+=======
+  // Function to handle password change
+  const handleChangePassword = () => {
+>>>>>>> origin/master
     if (!newPassword || !confirmPassword) {
       Alert.alert('Error', 'Please enter both the new password and confirm password.');
       return;
@@ -71,6 +99,7 @@ const Recovery = () => {
       return;
     }
 
+<<<<<<< HEAD
     try {
       // Send new password to the backend for saving
       const response = await axios.post('http://192.168.1.9:3001/change-password', {
@@ -89,6 +118,12 @@ const Recovery = () => {
       console.error('Error changing password:', error);
       Alert.alert('Error', 'Failed to change password. Please try again later.');
     }
+=======
+    // Proceed with password change (replace with actual API call)
+    Alert.alert('Success', 'Your password has been changed successfully.', [
+      { text: 'OK', onPress: () => navigation.navigate('Login') },
+    ]);
+>>>>>>> origin/master
   };
 
   return (
@@ -101,6 +136,10 @@ const Recovery = () => {
       <View style={styles.card}>
         <Text style={styles.subtitle}>Please enter your email address.</Text>
 
+<<<<<<< HEAD
+=======
+        {/* Email Entry */}
+>>>>>>> origin/master
         {!otpSent && !otpVerified && (
           <>
             <TextInput
@@ -118,6 +157,10 @@ const Recovery = () => {
           </>
         )}
 
+<<<<<<< HEAD
+=======
+        {/* OTP Entry */}
+>>>>>>> origin/master
         {otpSent && !otpVerified && (
           <>
             <Text style={styles.subtitle}>Enter the OTP sent to your email:</Text>
@@ -135,6 +178,10 @@ const Recovery = () => {
           </>
         )}
 
+<<<<<<< HEAD
+=======
+        {/* New Password Entry */}
+>>>>>>> origin/master
         {otpVerified && (
           <>
             <Text style={styles.subtitle}>Create a new password:</Text>

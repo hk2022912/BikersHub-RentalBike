@@ -162,35 +162,55 @@ export default function HomeScreen({ navigation }) {
           style={styles.footerItem}
           onPress={() => navigation.navigate('Home')}
         >
+<<<<<<< HEAD
           <Image source={require('../img/home.png')} style={styles.footerImage} />
+=======
+          <Ionicons name="home-outline" size={24} color="#007BFF" />
+>>>>>>> origin/master
           <Text style={styles.footerText}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.footerItem}
           onPress={() => navigation.navigate('Rent')}
         >
+<<<<<<< HEAD
           <Image source={require('../img/bicycle.png')} style={styles.footerImage} />
+=======
+          <Ionicons name="bicycle-outline" size={24} color="#007BFF" />
+>>>>>>> origin/master
           <Text style={styles.footerText}>Rent</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.footerItem}
           onPress={() => navigation.navigate('Map')}
         >
+<<<<<<< HEAD
           <Image source={require('../img/map.png')} style={styles.footerImage} />
+=======
+          <Ionicons name="map-outline" size={24} color="#007BFF" />
+>>>>>>> origin/master
           <Text style={styles.footerText}>Map</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.footerItem}
           onPress={() => navigation.navigate('Tips')}
         >
+<<<<<<< HEAD
           <Image source={require('../img/tips.png')} style={styles.footerImage} />
+=======
+          <Ionicons name="bulb-outline" size={24} color="#007BFF" />
+>>>>>>> origin/master
           <Text style={styles.footerText}>Tips</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.footerItem}
           onPress={() => navigation.navigate('Guides')}
         >
+<<<<<<< HEAD
           <Image source={require('../img/guides.png')} style={styles.footerImage} />
+=======
+          <Ionicons name="book-outline" size={24} color="#007BFF" />
+>>>>>>> origin/master
           <Text style={styles.footerText}>Guides</Text>
         </TouchableOpacity>
       </View>

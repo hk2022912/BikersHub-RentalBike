@@ -48,6 +48,7 @@ const AccessoriesDetails = ({ route, navigation }) => {
     Linking.openURL(contacts[method]);
   };
 
+<<<<<<< HEAD
   const handleConfirmOrder = async () => {
   const orderDetails = {
     accessoryName: accessory.name,
@@ -79,6 +80,13 @@ const AccessoriesDetails = ({ route, navigation }) => {
 };
 
 
+=======
+  const handleConfirmOrder = () => {
+    toggleModal('checkout', false);
+    toggleModal('success', true);
+  };
+
+>>>>>>> origin/master
   const handleBackToHome = () => {
     toggleModal('success', false);
     navigation.goBack();
@@ -170,6 +178,7 @@ const AccessoriesDetails = ({ route, navigation }) => {
 
       {/* Payment Method Modal */}
       <Modal visible={modals.payment} transparent animationType="fade">
+<<<<<<< HEAD
               <View style={styles.modalContainer}>
                 <View style={styles.card}>
                   <Text style={styles.modalHeader}>Select Payment Method</Text>
@@ -192,6 +201,30 @@ const AccessoriesDetails = ({ route, navigation }) => {
                 </View>
               </View>
         </Modal>
+=======
+        <View style={styles.modalContainer}>
+          <View style={styles.card}>
+            <Text style={styles.modalHeader}>Select Payment Method</Text>
+            {['Gcash', 'PayMaya', 'GoTyme'].map((method) => (
+              <TouchableOpacity
+                key={method}
+                style={styles.optionButton}
+                onPress={() => {
+                  setPaymentMethod(method);
+                  proceedToNext('payment', 'shipping');
+                }}>
+                <Text style={styles.optionButtonText}>{method}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={styles.secondaryButton}
+              onPress={() => toggleModal('payment', false)}>
+              <Text style={styles.secondaryButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+>>>>>>> origin/master
 
       {/* Shipping Information Modal */}
       <Modal visible={modals.shipping} transparent animationType="fade">
