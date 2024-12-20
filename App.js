@@ -31,12 +31,6 @@ import Notification from './assets/pages/notification/notification'; // Import N
 import BikeDetails from './assets/pages/rent/bikedetails'; // Import BikeDetails screen
 import AccessoriesBike from './assets/pages/accessories/BikeAccessories';
 import AccessoriesDetails from './assets/pages/accessories/AccessoriesDetails';
-<<<<<<< HEAD
-import Cart from './assets/pages/cart';  // Import Cart screen
-import CheckoutDetails from './assets/pages/accessories/checkoutdetails';
-=======
-
->>>>>>> origin/master
 
 const Stack = createStackNavigator();
 
