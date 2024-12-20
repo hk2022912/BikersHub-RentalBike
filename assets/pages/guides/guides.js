@@ -50,13 +50,13 @@ const Guide = ({ navigation }) => {
       title: 'Gears and Shifters',
       description: 'Struggling with gear shifting',
       icon: require('../../img/gears.png'), // Updated image path
-      screen: 'Gears and Shifters',
+      screen: 'Gears',
     },
     {
       title: 'Suspension (Optional)',
       description: 'Maintain your suspension system',
       icon: require('../../img/suspension.png'), // Updated image path
-      screen: 'Suspension (Optional)',
+      screen: 'Suspension',
     },
     {
       title: 'Accessories',

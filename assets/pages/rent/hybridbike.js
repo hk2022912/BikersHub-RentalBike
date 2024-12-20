@@ -8,48 +8,48 @@ const MountainBikes = () => {
   const mountainBikesData = [
     {
       id: 1,
-      name: 'Rocky Mountain Trail Bike',
-      price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Royce Union RMT Mens Bike',
+      price: 70,
+      imageUrl: require('../../img/hybrid1.jpg'),
+      description: 'Durable and lightweight aluminum frame, perfect for tackling rugged trails and smooth urban roads.',
     },
     {
       id: 2,
-      name: 'Rocky Mountain Roads Bike',
-      price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Mongoose Malus Bike with Disc Brakes',
+      price: 80,
+      imageUrl: require('../../img/hybrid2.jpg'),
+      description: 'Equipped with fat tires and reliable disc brakes for superior control on sandy or snowy terrains.',
     },
     {
       id: 3,
       name: 'Rocky Mountain Bike',
       price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      imageUrl: require('../../img/hybrid3.jpg'),
+      description: 'Engineered for extreme off-road performance, featuring shock-absorbing suspension for a smoother ride.',
     },
     {
       id: 4,
-      name: 'Rocky Mountain Trail Bike',
-      price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Folding Mountain Bike',
+      price: 90,
+      imageUrl: require('../../img/hybrid4.jpg'),
+      description: 'Compact and foldable design, ideal for adventurers seeking portability without compromising performance.',
     },
     {
       id: 5,
-      name: 'Rocky Mountain Trail Bike',
-      price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Kent T-29 Men’s Mountain Bike',
+      price: 80,
+      imageUrl: require('../../img/hybrid5.jpg'),
+      description: '29-inch wheels with a sleek design, delivering stability and speed for both trails and urban exploration.',
     },
     {
       id: 6,
-      name: 'Rocky Mountain Trail Bike',
-      price: 60,
-      imageUrl: require('../../img/logo.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      name: 'Hiland Aluminum Hybrid Fitness Road Bike',
+      price: 70,
+      imageUrl: require('../../img/hybrid6.jpg'),
+      description: 'A versatile hybrid bike with a lightweight frame, perfect for fitness rides and long-distance commuting.',
     },
-    // Add other bikes...
   ];
+  
 
   const handlePress = (bike) => {
     navigation.navigate('BikeDetails', { bike });

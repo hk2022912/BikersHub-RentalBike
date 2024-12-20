@@ -8,12 +8,12 @@ const categories = [
   {
     id: 1,
     name: 'Safety Tips',
-    image: require('../../img/logo.png'), // Replace with an appropriate image for safety tips
+    image: require('../../img/safetytips.png'), // Replace with an appropriate image for safety tips
   },
   {
     id: 2,
     name: 'Maintenance Tips',
-    image: require('../../img/logo.png'), // Replace with an appropriate image for maintenance tips
+    image: require('../../img/maintenancetips.png'), // Replace with an appropriate image for maintenance tips
   },
 ];
 

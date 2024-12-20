@@ -10,8 +10,9 @@ const CityBikes = () => {
       id: 1,
       name: 'Black Velo Sport Bike',
       price: 35,
-      imageUrl: require('../../img/city1.jpg'),
-      description: 'A fast and stylish bike perfect for city commutes.',
+      imageUrl: require('../../img/city1.jpg'), // Ensure the path is correct
+      description: 'A sleek and lightweight city bike designed for speed and efficiency, perfect for urban commuting and leisure rides.',
+      status: 'available',
     },
     {
       id: 2,
@@ -19,6 +20,7 @@ const CityBikes = () => {
       price: 50,
       imageUrl: require('../../img/city2.png'),
       description: 'Lightweight and durable, ideal for long rides.',
+      status: 'under maintenance',
     },
     {
       id: 3,
@@ -26,40 +28,64 @@ const CityBikes = () => {
       price: 45,
       imageUrl: require('../../img/city3.png'),
       description: 'Versatile hybrid bike designed for both streets and trails.',
+      status: 'not available',
     },
     {
       id: 4,
-      name: 'Yellow Commuter Bike',
+      name: 'Sixthreezero EVRYjourney Hybrid Cruiser',
       price: 40,
       imageUrl: require('../../img/city4.png'),
-      description: 'Comfortable commuter bike for daily travel.',
+      description: 'A stylish, comfortable bike with a step-through frame, ideal for relaxed city rides and short commutes.',
+      status: 'available',
     },
     {
       id: 5,
-      name: 'Yellow Commuter Bike',
+      name: 'Priority Classic Plus',
       price: 40,
       imageUrl: require('../../img/city5.png'),
       description: 'A reliable commuter bike with excellent comfort.',
+      status: 'available',
     },
     {
       id: 6,
-      name: 'Yellow Commuter Bike',
+      name: 'Retrospec Beaumont City Bike',
       price: 40,
       imageUrl: require('../../img/city6.png'),
       description: 'Comfortable and affordable bike for everyday use.',
+      status: 'available',
     },
   ];
+
   const handlePress = (bike) => {
-    navigation.navigate('BikeDetails', { bike }); // Pass the selected bike to the BikeDetails screen
+    if (bike.status === 'available') {
+      navigation.navigate('BikeDetails', { bike });
+    }
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handlePress(item)} style={styles.bikeCard}>
-      <Image source={item.imageUrl} style={styles.bikeImage} />
-      <Text style={styles.bikeName}>{item.name}</Text>
-      <Text style={styles.bikePrice}>₱{item.price}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }) => {
+    const isAvailable = item.status === 'available';
+    const statusStyle =
+      item.status === 'available'
+        ? styles.statusAvailable
+        : item.status === 'not available'
+        ? styles.statusNotAvailable
+        : styles.statusMaintenance;
+
+    return (
+      <TouchableOpacity
+        onPress={() => handlePress(item)}
+        style={[styles.bikeCard, !isAvailable && styles.disabledCard]}
+        disabled={!isAvailable}
+      >
+        <Image source={item.imageUrl} style={styles.bikeImage} />
+        <Text style={styles.bikeName}>{item.name}</Text>
+        <Text style={styles.bikePrice}>₱{item.price}</Text>
+        <Text style={[styles.bikeStatus, statusStyle]}>
+          {item.status.replace(/^\w/, (c) => c.toUpperCase())}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -89,6 +115,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
+  disabledCard: {
+    backgroundColor: '#f2f2f2',
+  },
   bikeImage: {
     width: 130,
     height: 120,
@@ -103,6 +132,19 @@ const styles = StyleSheet.create({
   bikePrice: {
     fontSize: 14,
     color: '#2ecc71',
+  },
+  bikeStatus: {
+    fontSize: 12,
+    marginTop: 5,
+  },
+  statusAvailable: {
+    color: '#2ecc71',
+  },
+  statusNotAvailable: {
+    color: '#e74c3c',
+  },
+  statusMaintenance: {
+    color: '#f39c12',
   },
   listContainer: {
     paddingBottom: 10,

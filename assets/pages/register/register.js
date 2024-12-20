@@ -13,6 +13,7 @@ import {
   Modal,
 } from "react-native";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Register = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -60,16 +61,23 @@ const Register = ({ navigation }) => {
     return true;
   };
 
+  // Save user data after successful registration
   const handleRegister = async () => {
     if (validateForm()) {
       try {
-        const response = await axios.post("http://192.168.1.9:3001/register", {
+        const response = await axios.post("http://10.0.0.66:3001/register", {
           fullName: form.fullName,
           email: form.email,
           password: form.password,
         });
 
         if (response.status === 201) {
+          // Save user details to AsyncStorage
+          await AsyncStorage.setItem('user', JSON.stringify({
+            fullName: form.fullName,
+            email: form.email,
+          }));
+
           setModalVisible(true); // Show modal on success
         } else {
           Alert.alert("Error", "Registration failed.");
@@ -316,13 +324,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginTop: 10,
   },
   modalText: {
     fontSize: 16,
-    marginBottom: 20,
+    color: '#fff',
+    marginVertical: 10,
+    textAlign: 'center',
   },
   modalButtons: {
     flexDirection: "row",

@@ -152,7 +152,7 @@ const UserMap = () => {
         <Text style={styles.infoText}>📍 Location: {locationDetails}</Text>
         <Text style={styles.infoText}>📏 Distance: {totalDistance.toFixed(2)} km</Text>
         <Text style={styles.infoText}>⏱️ Time: {Math.floor(duration / 60)} min {Math.floor(duration % 60)} sec</Text>
-        <Text style={styles.infoText}>🚗 Speed: {speed} km/h</Text>
+        <Text style={styles.infoText}>🚲 Speed: {speed} km/h</Text>
       </View>
 
       <View style={styles.zoomContainer}>

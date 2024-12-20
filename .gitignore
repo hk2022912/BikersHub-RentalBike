@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+EMAILJS_PRIVATE_KEY=UoNN_4H2MEulzux1xDHPF
+
+
 # Expo
 .expo/
 dist/

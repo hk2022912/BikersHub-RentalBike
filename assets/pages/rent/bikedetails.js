@@ -48,6 +48,7 @@ export default function BikeDetails({route}) {
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     return `${formattedHours}:${formattedMinutes} ${ampm}`;
   };
+  
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -172,11 +173,11 @@ export default function BikeDetails({route}) {
         {/* Renter Details */}
         <View style={styles.renterContainer}>
           <View style={styles.renterImageContainer}>
-            <Image source={require('../../img/6.jpg')} style={styles.renterImage} />
+            <Image source={require('../../img/logo.png')} style={styles.renterImage} />
           </View>
           <View style={styles.renterTextContainer}>
-            <Text style={styles.renterName}>Sooftware Eng</Text>
-            <Text style={styles.renterTitle}>Owner</Text>
+            <Text style={styles.renterName}>BikersHub Company</Text>
+            <Text style={styles.renterTitle}>Owner of BikersHub</Text>
           </View>
         </View>
 
