@@ -8,20 +8,12 @@ const categories = [
   {
     id: 1,
     name: 'Safety Tips',
-<<<<<<< HEAD
     image: require('../../img/safetytips.png'), // Replace with an appropriate image for safety tips
-=======
-    image: require('../../img/safetytipsimage.jpg'), // Replace with an appropriate image for safety tips
->>>>>>> origin/master
   },
   {
     id: 2,
     name: 'Maintenance Tips',
-<<<<<<< HEAD
     image: require('../../img/maintenancetips.png'), // Replace with an appropriate image for maintenance tips
-=======
-    image: require('../../img/maintenanceimage.jpg'), // Replace with an appropriate image for maintenance tips
->>>>>>> origin/master
   },
 ];
 

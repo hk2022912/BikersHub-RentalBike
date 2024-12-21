@@ -25,42 +25,26 @@ export default function Login({ navigation }) {
     }
 
     try {
-<<<<<<< HEAD
       const response = await axios.post('http://10.0.0.66:3001/login', {
-=======
-      const response = await axios.post('http://192.168.1.10:3001/login', {
->>>>>>> origin/master
         email: username, // Assuming username is the email
         password,
       });
 
       if (response.status === 200) {
         const { full_name, email } = response.data.user;
-<<<<<<< HEAD
       
-=======
-
->>>>>>> origin/master
         // Save user data in AsyncStorage
         await AsyncStorage.setItem(
           'user',
           JSON.stringify({ fullName: full_name, email })
         );
-<<<<<<< HEAD
       
         Alert.alert(`Login Successful`, `Welcome, ${full_name}!`);
-=======
-
-        Alert.alert('Login Successful', `Welcome, ${full_name}!`);
->>>>>>> origin/master
         navigation.navigate('Home');
       } else {
         Alert.alert('Login Failed', 'Invalid username or password.');
       }
-<<<<<<< HEAD
       
-=======
->>>>>>> origin/master
     } catch (error) {
       console.error(error);
       const errorMessage =
@@ -152,26 +136,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 50, // Adjust padding for better layout
     backgroundColor: '#F0F4F8',
-<<<<<<< HEAD
     top: 60,
-=======
-    top: 20,
->>>>>>> origin/master
   },
   image: {
     width: 250,
     height: 190,
-<<<<<<< HEAD
     marginBottom: 60, // Increased margin to avoid overlap
-=======
-    marginBottom: 40,
->>>>>>> origin/master
     borderRadius: 20,
   },
   section: {
     width: '90%',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // fixed the typo here
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     paddingVertical: 30,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -200,10 +176,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     width: '100%',
     position: 'relative',
-<<<<<<< HEAD
     marginBottom: 15, // Ensure spacing between password field and other elements
-=======
->>>>>>> origin/master
   },
   iconContainer: {
     position: 'absolute',

@@ -12,11 +12,8 @@ import {
   Alert,
   Modal,
 } from "react-native";
-<<<<<<< HEAD
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage'
-=======
->>>>>>> origin/master
 
 const Register = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -64,7 +61,6 @@ const Register = ({ navigation }) => {
     return true;
   };
 
-<<<<<<< HEAD
   // Save user data after successful registration
   const handleRegister = async () => {
     if (validateForm()) {
@@ -90,11 +86,6 @@ const Register = ({ navigation }) => {
         console.error("Registration error:", error.response?.data || error.message);
         Alert.alert("Error", error.response?.data?.error || "An error occurred during registration.");
       }
-=======
-  const handleRegister = () => {
-    if (validateForm()) {
-      setModalVisible(true); // Show modal on success
->>>>>>> origin/master
     }
   };
 

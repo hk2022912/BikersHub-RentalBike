@@ -58,7 +58,7 @@ const AccessoriesDetails = ({ route, navigation }) => {
   };
 
   try {
-    const response = await fetch('http://192.168.1.9:3001/api/confirm-order', {
+    const response = await fetch('http://10.0.0.51:3001/api/confirm-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderDetails),
@@ -170,32 +170,10 @@ const AccessoriesDetails = ({ route, navigation }) => {
 
       {/* Payment Method Modal */}
       <Modal visible={modals.payment} transparent animationType="fade">
-              <View style={styles.modalContainer}>
-                <View style={styles.card}>
-                  <Text style={styles.modalHeader}>Select Payment Method</Text>
-                  {['Gcash', 'PayMaya', 'GoTyme', 'Cash on Delivery'].map((method) => (
-                    <TouchableOpacity
-                      key={method}
-                      style={styles.optionButton}
-                      onPress={() => {
-                        setPaymentMethod(method);
-                        proceedToNext('payment', 'checkout');
-                      }}>
-                      <Text style={styles.optionButtonText}>{method}</Text>
-                    </TouchableOpacity>
-                  ))}
-                  <TouchableOpacity
-                    style={styles.secondaryButton}
-                    onPress={() => toggleModal('payment', false)}>
-                    <Text style={styles.secondaryButtonText}>Cancel</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-        </Modal>
         <View style={styles.modalContainer}>
           <View style={styles.card}>
             <Text style={styles.modalHeader}>Select Payment Method</Text>
-            {['Gcash', 'PayMaya', 'GoTyme'].map((method) => (
+            {['Gcash', 'PayMaya', 'GoTyme', 'Cash on Delivery'].map((method) => (
               <TouchableOpacity
                 key={method}
                 style={styles.optionButton}
@@ -517,6 +495,69 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 16,
     color: '#777',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  card: {
+    backgroundColor: '#fff',
+    padding: 24,
+    borderRadius: 12,
+    width: '80%',
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  quantityButton: {
+    backgroundColor: '#0288d1',
+    padding: 10,
+    borderRadius: 8,
+  },
+  quantityButtonText: { color: '#fff', fontSize: 18 },
+  quantityText: { fontSize: 24, marginHorizontal: 16, alignSelf: 'center' },
+  primaryButton: {
+    backgroundColor: '#1b5e20',
+    paddingVertical: 12,
+    marginTop: 16,
+    borderRadius: 8,
+  },
+  primaryButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  secondaryButton: {
+    backgroundColor: '#d32f2f',
+    paddingVertical: 12,
+    marginTop: 8,
+    borderRadius: 8,
+  },
+  secondaryButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  optionButton: {
+    backgroundColor: '#0288d1',
+    paddingVertical: 12,
+    marginVertical: 8,
+    borderRadius: 8,
+  },
+  optionButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center', // This ensures the text is centered
   },
 });
 
