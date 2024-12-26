@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Importing Ionicons ico
 const Guide = ({ navigation }) => {
   const tutorials = [
     {
-      title: 'Wheels',
+      title: 'Wheels',  
       description: 'Learn how to maintain and replace wheels',
       icon: require('../../img/wheels.png'), // Updated image path
       screen: 'Wheels',

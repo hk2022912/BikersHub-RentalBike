@@ -10,7 +10,7 @@ const Fork = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       {/* Clickable Image to Open YouTube Video */}
       <TouchableOpacity onPress={openYouTubeLink}>
-        <Image source={require('../../img/fork.png')} style={styles.image} />
+        <Image source={require('../../img/fork1.png')} style={styles.image} />
       </TouchableOpacity>
 
       {/* Tools and Materials Section */}

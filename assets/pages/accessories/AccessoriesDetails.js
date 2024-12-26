@@ -10,7 +10,7 @@ import {
   Linking,
   ScrollView,
 } from 'react-native';
-import { MaterialCommunityIcons } from 'react-native-vector-icons'; // Importing icons
+import { MaterialCommunityIcons } from 'react-native-vector-icons'; 
 
 const AccessoriesDetails = ({ route, navigation }) => {
   const { accessory } = route.params;
@@ -58,7 +58,7 @@ const AccessoriesDetails = ({ route, navigation }) => {
   };
 
   try {
-    const response = await fetch('http://10.0.0.51:3001/api/confirm-order', {
+    const response = await fetch('http://192.168.234.223:3001/api/confirm-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderDetails),

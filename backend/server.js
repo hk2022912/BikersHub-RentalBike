@@ -17,9 +17,9 @@ app.use(bodyParser.json());
 // MySQL connection setup
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root", // Your MySQL username
-  password: "mysql123", // Your MySQL password
-  database: "bikershub_db", // Database name
+  user: "root",
+  password: "mysql123", 
+  database: "bikershub_db", 
 });
 
 // Connect to the database

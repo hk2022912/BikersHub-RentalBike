@@ -10,7 +10,7 @@ const Frame = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       {/* Clickable Image to Open YouTube Video */}
       <TouchableOpacity onPress={openYouTubeLink}>
-        <Image source={require('../../img/Frame.png')} style={styles.image} />
+        <Image source={require('../../img/Frame1.png')} style={styles.image} />
       </TouchableOpacity>
 
       {/* Tools and Materials Section */}

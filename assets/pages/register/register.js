@@ -65,7 +65,7 @@ const Register = ({ navigation }) => {
   const handleRegister = async () => {
     if (validateForm()) {
       try {
-        const response = await axios.post("http://10.0.0.66:3001/register", {
+        const response = await axios.post("http://192.168.234.223:3001/register", {
           fullName: form.fullName,
           email: form.email,
           password: form.password,
@@ -92,7 +92,7 @@ const Register = ({ navigation }) => {
   const handleModalOption = (notify) => {
     setModalVisible(false); // Close modal
     if (notify) {
-      navigation.navigate("Home"); // Navigate to Home
+      navigation.navigate("Login"); // Navigate to Login
     }
   };
 
@@ -210,9 +210,9 @@ const Register = ({ navigation }) => {
             <Text style={styles.modalText}>Registration completed successfully.</Text>
             <TouchableOpacity
               style={[styles.modalButton, styles.modalButtonYes]}
-              onPress={() => handleModalOption(true)}
+              onPress={(Login) => handleModalOption(true)}
             >
-              <Text style={styles.modalButtonText}>Proceed to Home</Text>
+              <Text style={styles.modalButtonText}>Proceed to Login</Text>
             </TouchableOpacity>
           </View>
         </View>

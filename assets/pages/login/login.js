@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
     }
 
     try {
-      const response = await axios.post('http://10.0.0.66:3001/login', {
+      const response = await axios.post('http://192.168.234.223:3001/login', {
         email: username, // Assuming username is the email
         password,
       });

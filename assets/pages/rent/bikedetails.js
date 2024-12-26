@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, params, View, route, Text, Image, TouchableOpacity, Animated, ScrollView, Modal } from "react-native";
+import { StyleSheet, params, View, route, Text, Image, TouchableOpacity, Animated, ScrollView, Modal, } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons"; 
@@ -142,23 +142,15 @@ export default function BikeDetails({route}) {
               >
                 <Text style={styles.modalOptionText}>GCash</Text>
               </TouchableOpacity>
+          
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={() => {
-                  setPaymentMethod("COD");
+                  setPaymentMethod("GoTyme");
                   setShowPaymentModal(false);
                 }}
               >
-                <Text style={styles.modalOptionText}>COD</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalOption}
-                onPress={() => {
-                  setPaymentMethod("GotoMe");
-                  setShowPaymentModal(false);
-                }}
-              >
-                <Text style={styles.modalOptionText}>GotoMe</Text>
+                <Text style={styles.modalOptionText}>GoTyme</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalCloseButton}
@@ -213,6 +205,8 @@ export default function BikeDetails({route}) {
 
         <StatusBar style="auto" />
       </View>
+
+      
     </ScrollView>
   );
 }
