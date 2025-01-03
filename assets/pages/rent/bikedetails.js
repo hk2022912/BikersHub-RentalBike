@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   },
   priceContainer: {
     backgroundColor: "#f1c40f", // Yellow background
-    width: "20%", // Adjust width as needed
+    width: "18%", // Adjust width as needed
     alignItems: "center",
     paddingVertical: 10,
     marginTop: 5,

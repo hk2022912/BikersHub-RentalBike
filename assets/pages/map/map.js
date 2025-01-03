@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions, ActivityIndicator, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
@@ -9,9 +16,10 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
 
-  const a = Math.sin(dLat / 2) ** 2 +
-            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-            Math.sin(dLon / 2) ** 2;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   return R * c;
@@ -36,51 +44,64 @@ const UserMap = () => {
   const [speed, setSpeed] = useState(0);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied.');
-        setLoading(false);
-        return;
-      }
+    let locationSubscription = null;
 
-      let loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc);
-      setRegion({
-        ...region,
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
-      setStartTime(new Date());
-
-      // Fetch detailed location data
-      let [place] = await Location.reverseGeocodeAsync({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-      });
-
-      const exactLocation = `${place.name || ''}, ${place.district || ''}, ${place.city || ''}, ${place.region || ''}`;
-      setLocationDetails(exactLocation.trim());
-      setLoading(false);
-
-      // Start location updates
-      const locationSubscription = await Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.High, distanceInterval: 1 },
-        (newLocation) => {
-          setLocation(newLocation);
-          setSpeed((newLocation.coords.speed * 3.6).toFixed(2)); // Convert m/s to km/h
-          setRegion({
-            ...region,
-            latitude: newLocation.coords.latitude,
-            longitude: newLocation.coords.longitude,
-          });
+    const fetchLocation = async () => {
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          setErrorMsg('Permission to access location was denied.');
+          setLoading(false);
+          return;
         }
-      );
 
-      return () => {
-        locationSubscription && locationSubscription.remove();
-      };
-    })();
+        const loc = await Location.getCurrentPositionAsync({});
+        setLocation(loc);
+        setRegion((prevRegion) => ({
+          ...prevRegion,
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+        }));
+        setStartTime(new Date());
+
+        try {
+          const [place] = await Location.reverseGeocodeAsync({
+            latitude: loc.coords.latitude,
+            longitude: loc.coords.longitude,
+          });
+          const exactLocation = `${place.name || ''}, ${place.city || ''}, ${place.region || ''}`.trim();
+          setLocationDetails(exactLocation);
+        } catch {
+          setLocationDetails('Location details unavailable.');
+        }
+
+        setLoading(false);
+
+        locationSubscription = await Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.High, distanceInterval: 1 },
+          (newLocation) => {
+            setLocation(newLocation);
+            setSpeed((newLocation.coords.speed * 3.6).toFixed(2)); // Convert m/s to km/h
+            setRegion((prevRegion) => ({
+              ...prevRegion,
+              latitude: newLocation.coords.latitude,
+              longitude: newLocation.coords.longitude,
+            }));
+          }
+        );
+      } catch (error) {
+        setErrorMsg('An error occurred while fetching location.');
+        setLoading(false);
+      }
+    };
+
+    fetchLocation();
+
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -97,7 +118,7 @@ const UserMap = () => {
           location.coords.latitude,
           location.coords.longitude
         );
-        setTotalDistance(totalDistance + distance);
+        setTotalDistance((prevDistance) => prevDistance + distance);
       }
 
       setPreviousLocation({
@@ -129,11 +150,20 @@ const UserMap = () => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Loading location data...</Text>
+      </View>
+    );
   }
 
   if (errorMsg) {
-    return <Text>{errorMsg}</Text>;
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{errorMsg}</Text>
+      </View>
+    );
   }
 
   return (
@@ -144,7 +174,11 @@ const UserMap = () => {
         onRegionChangeComplete={setRegion}
       >
         {markerCoordinate && (
-          <Marker coordinate={markerCoordinate} title="You are here" description={locationDetails} />
+          <Marker
+            coordinate={markerCoordinate}
+            title="You are here"
+            description={locationDetails}
+          />
         )}
       </MapView>
 
@@ -166,6 +200,7 @@ const UserMap = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

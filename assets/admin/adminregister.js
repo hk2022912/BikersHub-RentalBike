@@ -12,17 +12,13 @@ import {
   Alert,
   Modal,
 } from "react-native";
-import { Picker } from '@react-native-picker/picker';
-import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Register = ({ navigation }) => {
+const AdminRegister = ({ navigation }) => {
   const [form, setForm] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // Default role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -37,9 +33,9 @@ const Register = ({ navigation }) => {
     setShowConfirmPassword((prev) => !prev);
 
   const validateForm = () => {
-    const { fullName, email, password, confirmPassword } = form;
+    const { name, email, password, confirmPassword } = form;
 
-    if (!fullName || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       Alert.alert("Error", "All fields are required.");
       return false;
     }
@@ -63,39 +59,16 @@ const Register = ({ navigation }) => {
     return true;
   };
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     if (validateForm()) {
-      try {
-        const response = await axios.post("http://192.168.1.9:3001/register", {
-          fullName: form.fullName,
-          email: form.email,
-          password: form.password,
-          role: form.role,
-        });
-
-        if (response.status === 201) {
-          await AsyncStorage.setItem('user', JSON.stringify({
-            fullName: form.fullName,
-            email: form.email,
-            role: form.role,
-          }));
-
-          setModalVisible(true);
-        } else {
-          Alert.alert("Error", "Registration failed.");
-        }
-      } catch (error) {
-        console.error("Registration error:", error.response?.data || error.message);
-        Alert.alert("Error", error.response?.data?.error || "An error occurred during registration.");
-      }
+      // Perform registration logic here (e.g., API call)
+      setModalVisible(true); // Show success modal
     }
   };
 
-  const handleModalOption = (notify) => {
+  const handleModalOption = () => {
     setModalVisible(false);
-    if (notify) {
-      navigation.navigate("Login");
-    }
+    navigation.navigate("Admin"); // Navigate to Admin Panel
   };
 
   return (
@@ -107,17 +80,17 @@ const Register = ({ navigation }) => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>Register</Text>
-        <Text style={styles.subtitle}>Enter Your Personal Information</Text>
+        <Text style={styles.title}>Admin Registration</Text>
+        <Text style={styles.subtitle}>Enter Your Information</Text>
 
         <View style={styles.form}>
           <View style={styles.inputField}>
-            <Text style={styles.label}>Full Name</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
-              value={form.fullName}
-              onChangeText={(text) => handleInputChange("fullName", text)}
-              placeholder="Enter your Name"
+              value={form.name}
+              onChangeText={(text) => handleInputChange("name", text)}
+              placeholder="Enter your name"
             />
           </View>
 
@@ -149,8 +122,8 @@ const Register = ({ navigation }) => {
                 <Image
                   source={
                     showPassword
-                      ? require("../../img/eyeOpen.png")
-                      : require("../../img/eyeClose.png")
+                      ? require("../img/eyeOpen.png")
+                      : require("../img/eyeClose.png")
                   }
                   style={styles.eyeIcon}
                 />
@@ -164,7 +137,9 @@ const Register = ({ navigation }) => {
               <TextInput
                 style={[styles.input, styles.passwordInput]}
                 value={form.confirmPassword}
-                onChangeText={(text) => handleInputChange("confirmPassword", text)}
+                onChangeText={(text) =>
+                  handleInputChange("confirmPassword", text)
+                }
                 placeholder="Confirm your password"
                 secureTextEntry={!showConfirmPassword}
               />
@@ -175,8 +150,8 @@ const Register = ({ navigation }) => {
                 <Image
                   source={
                     showConfirmPassword
-                      ? require("../../img/eyeOpen.png")
-                      : require("../../img/eyeClose.png")
+                      ? require("../img/eyeOpen.png")
+                      : require("../img/eyeClose.png")
                   }
                   style={styles.eyeIcon}
                 />
@@ -184,32 +159,10 @@ const Register = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.inputField}>
-            <Text style={styles.label}>Role</Text>
-            <Picker
-              selectedValue={form.role}
-              style={styles.input}
-              onValueChange={(itemValue) => handleInputChange("role", itemValue)}
-            >
-              <Picker.Item label="User" value="User" />
-              <Picker.Item label="Admin" value="Admin" />
-            </Picker>
-          </View>
-
           <TouchableOpacity style={styles.buttonSubmit} onPress={handleRegister}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
         </View>
-
-        <Text style={styles.redirectText}>
-          Already have an account?{" "}
-          <Text
-            style={styles.redirectLink}
-            onPress={() => navigation.navigate("Login")}
-          >
-            Login
-          </Text>
-        </Text>
       </ScrollView>
 
       <Modal
@@ -223,10 +176,10 @@ const Register = ({ navigation }) => {
             <Text style={styles.modalTitle}>Success!</Text>
             <Text style={styles.modalText}>Registration completed successfully.</Text>
             <TouchableOpacity
-              style={[styles.modalButton, styles.modalButtonYes]}
-              onPress={() => handleModalOption(true)}
+              style={styles.modalButton}
+              onPress={handleModalOption}
             >
-              <Text style={styles.modalButtonText}>Proceed to Login</Text>
+              <Text style={styles.modalButtonText}>Proceed to Admin Panel</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -240,11 +193,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+    
   },
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
-    marginTop: 50,
+    paddingVertical: 40,
+    marginTop: 75,
   },
   title: {
     fontSize: 28,
@@ -290,38 +244,23 @@ const styles = StyleSheet.create({
   passwordToggle: {
     position: "absolute",
     right: 10,
-    top: 10,
-    height: 30,
-    width: 30,
-    justifyContent: "center",
-    alignItems: "center",
+    top: 12,
   },
   eyeIcon: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     tintColor: "#888",
   },
   buttonSubmit: {
-    backgroundColor: "#1E90FF",
-    paddingVertical: 15,
+    backgroundColor: "#2563eb",
     borderRadius: 8,
+    padding: 15,
     alignItems: "center",
-    marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  redirectText: {
-    marginTop: 20,
-    textAlign: "center",
-    fontSize: 14,
-    color: "#555",
-  },
-  redirectLink: {
-    color: "#1E90FF",
-    fontWeight: "bold",
+    color: "#fff",
   },
   modalContainer: {
     flex: 1,
@@ -331,31 +270,31 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: "#fff",
-    borderRadius: 10,
     padding: 20,
-    width: "80%",
+    borderRadius: 10,
     alignItems: "center",
   },
   modalTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 10,
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   modalText: {
-    fontSize: 16,
-    color: '#fff',
-    marginVertical: 10,
-    textAlign: 'center',
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 20,
   },
-  modalButtonYes: {
-    backgroundColor: "#1E90FF",
+  modalButton: {
+    backgroundColor: "#2563eb",
+    borderRadius: 8,
+    padding: 10,
+    alignItems: "center",
   },
   modalButtonText: {
+    fontSize: 14,
+    fontWeight: "bold",
     color: "#fff",
-    textAlign: "center",
-    fontSize: 16,
   },
 });
 
-export default Register;
+export default AdminRegister;

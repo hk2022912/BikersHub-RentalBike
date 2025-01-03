@@ -25,26 +25,24 @@ export default function Login({ navigation }) {
     }
 
     try {
-      const response = await axios.post('http://192.168.234.223:3001/login', {
-        email: username, // Assuming username is the email
+      const response = await axios.post('http://192.168.1.9:3001/login', {
+        email: username,
         password,
       });
 
       if (response.status === 200) {
         const { full_name, email } = response.data.user;
-      
-        // Save user data in AsyncStorage
+
         await AsyncStorage.setItem(
           'user',
           JSON.stringify({ fullName: full_name, email })
         );
-      
+
         Alert.alert(`Login Successful`, `Welcome, ${full_name}!`);
         navigation.navigate('Home');
       } else {
         Alert.alert('Login Failed', 'Invalid username or password.');
       }
-      
     } catch (error) {
       console.error(error);
       const errorMessage =
@@ -132,17 +130,15 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingVertical: 50, // Adjust padding for better layout
     backgroundColor: '#F0F4F8',
-    top: 60,
   },
   image: {
-    width: 250,
-    height: 190,
-    marginBottom: 60, // Increased margin to avoid overlap
-    borderRadius: 20,
+    width: 270,
+    height: 200,
+    marginTop: 100, // Ensure it doesn't overlap
+    marginBottom: 20,
   },
   section: {
     width: '90%',
@@ -176,7 +172,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     width: '100%',
     position: 'relative',
-    marginBottom: 15, // Ensure spacing between password field and other elements
+    marginBottom: 15,
   },
   iconContainer: {
     position: 'absolute',
@@ -187,9 +183,6 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     fontSize: 14,
     marginBottom: 20,
-    textAlign: 'left',
-    width: '100%',
-    paddingHorizontal: 10,
   },
   button: {
     width: '80%',
@@ -204,9 +197,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   socialLinksContainer: {
-    width: '80%',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    width: '60%',
     marginBottom: 20,
   },
   icon: {
