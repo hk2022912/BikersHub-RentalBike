@@ -22,7 +22,6 @@ const Register = ({ navigation }) => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // Default role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -70,14 +69,14 @@ const Register = ({ navigation }) => {
           fullName: form.fullName,
           email: form.email,
           password: form.password,
-          role: form.role,
+          
         });
 
         if (response.status === 201) {
           await AsyncStorage.setItem('user', JSON.stringify({
             fullName: form.fullName,
             email: form.email,
-            role: form.role,
+           
           }));
 
           setModalVisible(true);
@@ -184,17 +183,6 @@ const Register = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.inputField}>
-            <Text style={styles.label}>Role</Text>
-            <Picker
-              selectedValue={form.role}
-              style={styles.input}
-              onValueChange={(itemValue) => handleInputChange("role", itemValue)}
-            >
-              <Picker.Item label="User" value="User" />
-              <Picker.Item label="Admin" value="Admin" />
-            </Picker>
-          </View>
 
           <TouchableOpacity style={styles.buttonSubmit} onPress={handleRegister}>
             <Text style={styles.buttonText}>Register</Text>

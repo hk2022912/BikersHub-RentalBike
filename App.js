@@ -35,10 +35,12 @@ import AccessoriesDetails from './assets/pages/accessories/AccessoriesDetails';
 import Cart from './assets/pages/cart'; 
 import CheckoutDetails from './assets/pages/accessories/checkoutdetails';
 import Admin from './assets/admin/dashadmin';
-import AdminRegister from './assets/admin/adminregister';
 import bikeCategories from './assets/admin/bikecategories';
 import BikeCategoryDetails from './assets/admin/detailsbike';
 import AccessoryList from './assets/admin/AccessoryList'; 
+import AdminLogin from './assets/admin/adminlogin';
+import Dashboard from './assets/admin/dashadmin';
+import BikeList from './assets/admin/bikecategories';
 
 const Stack = createStackNavigator();
 
@@ -333,14 +335,6 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name="AdminRegister"
-            component={AdminRegister}
-            options={{
-              title: 'Admin Registration',
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
             name="BikeCategoryDetails"
             component={BikeCategoryDetails}
             options={{
@@ -357,6 +351,25 @@ export default function App() {
               headerShown: true,
               headerTitleAlign: 'center',
             }}
+          />
+          <Stack.Screen
+            name="AdminLogin"
+            component={AdminLogin}
+            options={{
+              title: 'Admin Login',
+              headerShown: false,
+              headerTitleAlign: 'center',
+            }}
+          />
+           <Stack.Screen 
+            name="AdminDashboard" 
+            component={Dashboard} 
+            options={{ title: 'Dashboard', headerShown: false, }} 
+          />
+            <Stack.Screen 
+            name="BikeList" 
+            component={BikeList} 
+            options={{ title: 'Bike Categories' }} 
           />
         </Stack.Navigator>
       </NavigationContainer>

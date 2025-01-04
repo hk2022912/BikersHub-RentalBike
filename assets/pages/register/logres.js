@@ -29,7 +29,7 @@ const LogRes = ({ navigation }) => {
       {isAdminVisible && (
         <TouchableOpacity
           style={[styles.button, styles.adminButton]}
-          onPress={() => navigation.navigate('AdminRegister')}
+          onPress={() => navigation.navigate('AdminLogin')}
         >
           <Text style={[styles.buttonText, styles.adminButtonText]}>Admin</Text>
         </TouchableOpacity>

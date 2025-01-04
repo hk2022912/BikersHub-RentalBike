@@ -5,29 +5,29 @@ import { AccessoriesContext } from '../../admin/AccessoriesContext';
 
 const Accessories = ({ navigation }) => {
   const { accessories } = useContext(AccessoriesContext);
-  const [columns, setColumns] = useState(2);  // State to toggle columns
+  const [columns, setColumns] = useState(2); // State to toggle columns
 
   return (
     <View style={styles.container}>
       <FlatList
-        key={columns}  // Key based on number of columns, forcing re-render
+        key={columns} // Key based on the number of columns, forcing re-render
         data={accessories}
         keyExtractor={(item) => item.id.toString()}
-        numColumns={columns}  // Dynamically set number of columns
+        numColumns={columns} // Dynamically set number of columns
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Image source={item.imageUrl} style={styles.itemImage} />
             <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+            <Text style={styles.itemPrice}>₱{item.price.toFixed(2)}</Text>
             <Text style={styles.itemStock}>Stock: {item.stock}</Text>
-            <Text style={styles.itemDescription}>{item.description}</Text>
+            
 
-            {/* Add to Cart Button */}
+            {/* Navigate to Accessory Details */}
             <TouchableOpacity
-              style={styles.addToCartButton}
+              style={styles.payButton}
               onPress={() => navigation.navigate('AccessoriesDetails', { accessory: item })}
             >
-              <MaterialCommunityIcons name="cart-plus" size={25} color="FFFF" />
+              <Text style={styles.payButtonText}>Buy Now</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -39,17 +39,17 @@ const Accessories = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: '#f8f8f8' },
   item: {
-    flex: 1,  // Make each item take full width in its column
+    flex: 1,
     padding: 15,
     margin: 5,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 10,
     backgroundColor: '#fff',
-    alignItems: 'center',  // Centering content inside the item
+    alignItems: 'center',
   },
   itemImage: {
-    width: '100%',  // Ensure image fills the container width
+    width: '100%',
     height: 120,
     resizeMode: 'contain',
     marginBottom: 10,
@@ -77,11 +77,18 @@ const styles = StyleSheet.create({
     color: '#555',
     textAlign: 'center',
   },
-  addToCartButton: {
+  payButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#2ecc71',
+    backgroundColor: '#3498db',
     borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  payButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

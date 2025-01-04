@@ -7,7 +7,7 @@ export default function AdminLogin({ navigation }) {
 
   const handleLogin = () => {
     // Basic validation (add more logic as necessary)
-    if (username === 'admin' && password === 'admin123') {
+    if (username === 'bikershub' && password === 'bikershub123') {
       // If login is successful, navigate to the dashboard
       navigation.navigate('AdminDashboard');
     } else {
@@ -38,9 +38,6 @@ export default function AdminLogin({ navigation }) {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('CreateAccount')}>
-        <Text style={styles.createAccountText}>Don't have an account? Create one here.</Text>
-      </TouchableOpacity>
     </View>
   );
 }

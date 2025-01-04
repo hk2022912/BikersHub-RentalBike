@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AccessoriesContext } from './AccessoriesContext';
 
 export default function AccessoryList() {
@@ -8,7 +9,33 @@ export default function AccessoryList() {
   const [newStock, setNewStock] = useState('');
   const [editingItem, setEditingItem] = useState(null);
 
-  // Add accessory to the list
+  // Load saved data from AsyncStorage when the component mounts
+  useEffect(() => {
+    const loadAccessories = async () => {
+      try {
+        const savedAccessories = await AsyncStorage.getItem('accessories');
+        if (savedAccessories) {
+          setAccessories(JSON.parse(savedAccessories));
+        }
+      } catch (error) {
+        console.error('Failed to load accessories:', error);
+      }
+    };
+    loadAccessories();
+  }, []);
+
+  // Save accessories to AsyncStorage whenever they change
+  useEffect(() => {
+    const saveAccessories = async () => {
+      try {
+        await AsyncStorage.setItem('accessories', JSON.stringify(accessories));
+      } catch (error) {
+        console.error('Failed to save accessories:', error);
+      }
+    };
+    saveAccessories();
+  }, [accessories]);
+
   const addAccessory = () => {
     if (newAccessory.trim() && newStock) {
       setAccessories([...accessories, { id: Date.now(), name: newAccessory, stock: Number(newStock) }]);
@@ -19,7 +46,6 @@ export default function AccessoryList() {
     }
   };
 
-  // Edit an existing accessory
   const editAccessory = () => {
     if (newAccessory.trim() && newStock) {
       const updatedAccessories = accessories.map((item) =>
@@ -34,7 +60,6 @@ export default function AccessoryList() {
     }
   };
 
-  // Delete an accessory from the list
   const deleteAccessory = (id) => {
     setAccessories(accessories.filter((item) => item.id !== id));
   };
@@ -43,7 +68,6 @@ export default function AccessoryList() {
     <View style={styles.container}>
       <Text style={styles.title}>Accessory Manager</Text>
 
-      {/* Input Fields for Accessory Name and Stock */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -60,8 +84,7 @@ export default function AccessoryList() {
           onChangeText={setNewStock}
           placeholderTextColor="#888"
         />
-        
-        {/* Conditionally render button based on whether we're editing or adding an item */}
+
         <TouchableOpacity
           onPress={editingItem ? editAccessory : addAccessory}
           style={[styles.button, editingItem && styles.updateButton]}
@@ -70,38 +93,40 @@ export default function AccessoryList() {
         </TouchableOpacity>
       </View>
 
-      {/* List of Accessories */}
       <FlatList
         data={accessories}
-        keyExtractor={(item) => item.id ? item.id.toString() : String(Date.now())} // Ensuring keyExtractor works
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
+          <View style={styles.itemContainer}>
             <View>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text>Stock: {item.stock !== undefined ? item.stock : 'N/A'}</Text> {/* Check if stock is defined */}
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text>Stock: {item.stock}</Text>
             </View>
-
-            {/* Edit and Delete Buttons */}
             <View style={styles.itemActions}>
-                <TouchableOpacity onPress={() => { 
-                setEditingItem(item.id); 
-                setNewAccessory(item.name); 
-                setNewStock(item.stock !== undefined ? item.stock.toString() : ''); 
-                }} style={styles.actionButton}>
-                <Text style={styles.actionText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => deleteAccessory(item.id)} style={styles.actionButton}>
-                <Text style={styles.actionText}>Delete</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-        )}
-        />
+              <TouchableOpacity
+                onPress={() => {
+                  setEditingItem(item.id);
+                  setNewAccessory(item.name);
+                  setNewStock(item.stock ? item.stock.toString() : '0');
 
+                }}
+                style={styles.actionButton}
+              >
+                <Text style={styles.actionText}>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => deleteAccessory(item.id)}
+                style={styles.actionButton}
+              >
+                <Text style={styles.actionText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

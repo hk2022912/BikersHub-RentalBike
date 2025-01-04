@@ -1,109 +1,170 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Icon library for a modern touch
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  Switch,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Dashboard({ navigation }) {
-  // Create animated value for scaling effect
-  const scale = new Animated.Value(1);
+  const [darkMode, setDarkMode] = React.useState(false);
 
-  // Function to animate button scaling on press
-  const onPressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.95, // Slightly shrink the button
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  const onPressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1, // Reset the button size
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
+  const styles = createStyles(darkMode);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Admin Dashboard</Text>
-      <View style={styles.buttonContainer}>
-        {/* Manage Bikes Button */}
-        <Animated.View style={[styles.button, { transform: [{ scale }] }]}>
-          <TouchableOpacity
-            style={styles.buttonContent}
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
-            onPress={() => navigation.navigate('BikeList')}
-          >
-            <Ionicons name="bicycle" size={40} color="#fff" style={styles.icon} />
-            <Text style={styles.buttonText}>Manage Bikes</Text>
-          </TouchableOpacity>
-        </Animated.View>
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.container}>
+        {/* Header Section */}
+        <View style={styles.header}>
+          <Text style={styles.greeting}>
+            {darkMode ? 'Good Evening, Admin!' : 'Good Morning, Admin!'}
+          </Text>
+          <Switch
+            value={darkMode}
+            onValueChange={toggleDarkMode}
+            trackColor={{ true: '#4A90E2', false: '#CCC' }}
+            thumbColor={darkMode ? '#fff' : '#4A90E2'}
+          />
+        </View>
 
-        {/* Manage Accessories Button */}
-        <Animated.View style={[styles.button, { transform: [{ scale }] }]}>
-          <TouchableOpacity
-            style={styles.buttonContent}
-            onPressIn={onPressIn}
-            onPressOut={onPressOut}
-            onPress={() => navigation.navigate('AccessoryList')}
-          >
-            <Ionicons name="shirt" size={40} color="#fff" style={styles.icon} />
-            <Text style={styles.buttonText}>Manage Accessories</Text>
-          </TouchableOpacity>
-        </Animated.View>
+        {/* Stats Section */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statCard}>
+            <Ionicons name="bicycle" size={40} color="#fff" />
+            <Text style={styles.statText}>Active Bikes</Text>
+            <Text style={styles.statValue}>120</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Ionicons name="people" size={40} color="#fff" />
+            <Text style={styles.statText}>Total Users</Text>
+            <Text style={styles.statValue}>850</Text>
+          </View>
+          <View style={styles.statCard}>
+            <Ionicons name="cash" size={40} color="#fff" />
+            <Text style={styles.statText}>Revenue</Text>
+            <Text style={styles.statValue}>$12,430</Text>
+          </View>
+        </View>
+
+        {/* Quick Actions Section */}
+        <View style={styles.quickActionsContainer}>
+          <Text style={styles.sectionTitle}>Quick Actions</Text>
+          <View style={styles.cardContainer}>
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('BikeList')}
+            >
+              <Ionicons name="bicycle" size={40} color="#fff" />
+              <Text style={styles.cardText}>Manage Bikes</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('AccessoryList')}
+            >
+              <Ionicons name="shirt" size={40} color="#fff" />
+              <Text style={styles.cardText}>Manage Accessories</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('UserManagement')}
+            >
+              <Ionicons name="people" size={40} color="#fff" />
+              <Text style={styles.cardText}>Manage Users</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate('Analytics')}
+            >
+              <Ionicons name="stats-chart" size={40} color="#fff" />
+              <Text style={styles.cardText}>View Analytics</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F7F7F7', // A soft light background for a modern feel
-    padding: 20,
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: '700',
-    marginBottom: 40,
-    color: '#333', // Dark text for better readability
-    textAlign: 'center',
-    fontFamily: 'Arial', // Custom font for style
-  },
-  buttonContainer: {
-    width: '100%',
-    gap: 20, // Maintain space between buttons
-  },
-  button: {
-    width: 260, // Consistent button width
-    height: 200, // Square buttons
-    backgroundColor: '#4A90E2', // A unique blue shade to add flair
-    borderRadius: 20, // Rounded corners for a smooth effect
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5, // Slight shadow for depth
-    marginHorizontal: 'auto', // Center buttons horizontally
-  },
-  buttonContent: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  buttonText: {
-    fontSize: 22,
-    fontWeight: '600',
-    color: '#fff', // White text for contrast
-    marginTop: 10, // Space between the icon and text
-    textAlign: 'center',
-    fontFamily: 'Arial', // Matching font for text
-  },
-  icon: {
-    marginBottom: 10, // Space between the icon and text
-  },
-});
+const createStyles = (darkMode) =>
+  StyleSheet.create({
+    scrollContainer: {
+      flex: 1,
+      backgroundColor: darkMode ? '#1E1E1E' : '#F7F7F7',
+    },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      padding: 20,
+    },
+    header: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    greeting: {
+      fontSize: 24,
+      fontWeight: '700',
+      color: darkMode ? '#FFF' : '#333',
+    },
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+      marginBottom: 20,
+    },
+    statCard: {
+      flex: 1,
+      backgroundColor: '#4A90E2',
+      borderRadius: 10,
+      padding: 15,
+      alignItems: 'center',
+      marginHorizontal: 5,
+    },
+    statText: {
+      color: '#FFF',
+      fontSize: 16,
+      marginTop: 10,
+    },
+    statValue: {
+      color: '#FFF',
+      fontSize: 20,
+      fontWeight: '700',
+    },
+    quickActionsContainer: {
+      width: '100%',
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: darkMode ? '#FFF' : '#333',
+      marginBottom: 10,
+    },
+    cardContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
+    card: {
+      width: '48%',
+      backgroundColor: '#4A90E2',
+      borderRadius: 10,
+      padding: 15,
+      alignItems: 'center',
+      marginBottom: 15,
+    },
+    cardText: {
+      color: '#FFF',
+      fontSize: 16,
+      marginTop: 10,
+    },
+  });

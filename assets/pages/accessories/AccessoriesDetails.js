@@ -7,21 +7,15 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Linking,
-  ScrollView,
+  Alert,
 } from 'react-native';
-import { MaterialCommunityIcons } from 'react-native-vector-icons'; 
+import { FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
 
 const AccessoriesDetails = ({ route, navigation }) => {
   const { accessory } = route.params;
-
   const [cart, setCart] = useState({ quantity: 1 });
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [shippingInfo, setShippingInfo] = useState({
-    fullName: '',
-    barangay: '',
-    street: '',
-  });
+  const [shippingInfo, setShippingInfo] = useState({ fullName: '', barangay: '', street: '' });
   const [modals, setModals] = useState({
     quantity: false,
     payment: false,
@@ -39,256 +33,177 @@ const AccessoriesDetails = ({ route, navigation }) => {
     toggleModal(nextModal, true);
   };
 
-  const contactSeller = (method) => {
-    const contacts = {
-      phone: 'tel:+1234567890',
-      email: 'mailto:seller@example.com',
-      facebook: 'https://www.facebook.com/sellerprofile',
-    };
-    Linking.openURL(contacts[method]);
-  };
-
-  const handleConfirmOrder = async () => {
-  const orderDetails = {
-    accessoryName: accessory.name,
-    quantity: cart.quantity,
-    price: accessory.price,
-    paymentMethod,
-    shippingInfo,
-  };
-
-  try {
-    const response = await fetch('http://192.168.234.223:3001/api/confirm-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderDetails),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      toggleModal('checkout', false);
-      toggleModal('success', true);
-      console.log(result);
-    } else {
-      console.error(result.error);
+  const handleConfirmOrder = () => {
+    if (!paymentMethod || !shippingInfo.fullName || !shippingInfo.barangay || !shippingInfo.street) {
+      Alert.alert('Error', 'Please fill out all details before proceeding.');
+      return;
     }
-  } catch (error) {
-    console.error('Error confirming order:', error);
-  }
-};
-
-
-  const handleBackToHome = () => {
-    toggleModal('success', false);
-    navigation.goBack();
+    toggleModal('checkout', false);
+    toggleModal('success', true);
   };
 
   return (
     <View style={styles.container}>
-      {/* Accessory image and details */}
       <Image source={accessory.imageUrl} style={styles.accessoryImage} />
       <Text style={styles.accessoryName}>{accessory.name}</Text>
       <Text style={styles.accessoryPrice}>₱{accessory.price}</Text>
+      <Text style={styles.itemDescription}>{accessory.description}</Text>
 
-      {/* Description with styled container */}
-      <View style={styles.accessoryDescriptionContainer}>
-        <Text style={styles.accessoryDescription}>{accessory.description}</Text>
+
+      {/* Company Name */}
+      <Text style={styles.companyName}>BIKERSHUB</Text>
+
+      {/* Contact Details Section */}
+      <View style={styles.contactDetailsContainer}>
+        <TouchableOpacity style={styles.contactIcon}>
+          <MaterialIcons name="email" size={30} color="#3498db" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.contactIcon}>
+          <FontAwesome name="phone" size={30} color="#2ecc71" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.contactIcon}>
+          <Entypo name="facebook" size={30} color="#3b5998" />
+        </TouchableOpacity>
       </View>
 
-      {/* Seller Details Section */}
-      <View style={styles.renterContainer}>
-        <Image source={require('../../img/logo.png')} style={styles.renterImage} />
-        <View style={styles.renterTextContainer}>
-          <Text style={styles.renterName}>BikersHub Company</Text>
-          <Text style={styles.renterTitle}>Owner of BikersHub</Text>
-        </View>
-      </View>
-
-      {/* Contact Information */}
-      <View style={styles.contactInfoContainer}>
-        <Text style={styles.contactInfoText}>For more inquiries, contact BikersHub:</Text>
-        <View style={styles.renterIconsContainer}>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => contactSeller('phone')}>
-            <MaterialCommunityIcons name="phone" size={30} color="#0288d1" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => contactSeller('email')}>
-            <MaterialCommunityIcons name="email" size={30} color="#0288d1" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => contactSeller('facebook')}>
-            <MaterialCommunityIcons name="facebook" size={30} color="#0288d1" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Order Now Button below the renter details */}
       <TouchableOpacity
-        style={styles.addToCartButton}
-        onPress={() => toggleModal('quantity', true)}>
-        <Text style={styles.addToCartButtonText}>ORDER NOW</Text>
+        style={styles.orderButton}
+        onPress={() => toggleModal('quantity', true)}
+      >
+        <Text style={styles.orderButtonText}>ORDER NOW</Text>
       </TouchableOpacity>
 
-      {/* Modals */}
       {/* Quantity Modal */}
-      <Modal visible={modals.quantity} transparent animationType="fade">
+      <Modal visible={modals.quantity} transparent>
         <View style={styles.modalContainer}>
-          <View style={styles.card}>
-            <Text style={styles.modalHeader}>Choose Quantity</Text>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Choose Quantity</Text>
             <View style={styles.quantityContainer}>
-              <TouchableOpacity
-                style={styles.quantityButton}
-                onPress={() =>
-                  setCart((prev) => ({
-                    ...prev,
-                    quantity: Math.max(1, prev.quantity - 1),
-                  }))}
-              >
-                <Text style={styles.quantityButtonText}>-</Text>
+              <TouchableOpacity onPress={() => setCart({ quantity: Math.max(1, cart.quantity - 1) })}>
+                <Text style={styles.quantityButton}>-</Text>
               </TouchableOpacity>
               <Text style={styles.quantityText}>{cart.quantity}</Text>
-              <TouchableOpacity
-                style={styles.quantityButton}
-                onPress={() =>
-                  setCart((prev) => ({ ...prev, quantity: prev.quantity + 1 }))
-                }>
-                <Text style={styles.quantityButtonText}>+</Text>
+              <TouchableOpacity onPress={() => setCart({ quantity: cart.quantity + 1 })}>
+                <Text style={styles.quantityButton}>+</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={() => proceedToNext('quantity', 'payment')}>
-              <Text style={styles.primaryButtonText}>Proceed to Payment</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() => toggleModal('quantity', false)}>
-              <Text style={styles.secondaryButtonText}>Cancel</Text>
+              style={styles.modalNextButton}
+              onPress={() => proceedToNext('quantity', 'payment')}
+            >
+              <Text style={styles.modalButtonText}>Next</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
       {/* Payment Method Modal */}
-      <Modal visible={modals.payment} transparent animationType="fade">
+      <Modal visible={modals.payment} transparent>
         <View style={styles.modalContainer}>
-          <View style={styles.card}>
-            <Text style={styles.modalHeader}>Select Payment Method</Text>
-            {['Gcash', 'PayMaya', 'GoTyme', 'Cash on Delivery'].map((method) => (
-              <TouchableOpacity
-                key={method}
-                style={styles.optionButton}
-                onPress={() => {
-                  setPaymentMethod(method);
-                  proceedToNext('payment', 'shipping');
-                }}>
-                <Text style={styles.optionButtonText}>{method}</Text>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Payment Method</Text>
             <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() => toggleModal('payment', false)}>
-              <Text style={styles.secondaryButtonText}>Cancel</Text>
+              style={[
+                styles.paymentOption,
+                paymentMethod === 'Gcash' && styles.selectedOption,
+              ]}
+              onPress={() => setPaymentMethod('Gcash')}
+            >
+              <Text style={styles.paymentText}>Gcash</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.paymentOption,
+                paymentMethod === 'Cash on Delivery' && styles.selectedOption,
+              ]}
+              onPress={() => setPaymentMethod('Cash on Delivery')}
+            >
+              <Text style={styles.paymentText}>Cash on Delivery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.modalNextButton}
+              onPress={() => proceedToNext('payment', 'shipping')}
+            >
+              <Text style={styles.modalButtonText}>Next</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      {/* Shipping Information Modal */}
-      <Modal visible={modals.shipping} transparent animationType="fade">
+      {/* Shipping Info Modal */}
+      <Modal visible={modals.shipping} transparent>
         <View style={styles.modalContainer}>
-          <View style={styles.card}>
-            <Text style={styles.modalHeader}>Shipping Information</Text>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Enter Shipping Information</Text>
             <TextInput
-              style={styles.input}
               placeholder="Full Name"
+              style={styles.input}
               value={shippingInfo.fullName}
-              onChangeText={(text) =>
-                setShippingInfo((prev) => ({ ...prev, fullName: text }))
-              }
+              onChangeText={(text) => setShippingInfo({ ...shippingInfo, fullName: text })}
             />
             <TextInput
-              style={styles.input}
               placeholder="Barangay"
+              style={styles.input}
               value={shippingInfo.barangay}
-              onChangeText={(text) =>
-                setShippingInfo((prev) => ({ ...prev, barangay: text }))
-              }
+              onChangeText={(text) => setShippingInfo({ ...shippingInfo, barangay: text })}
             />
             <TextInput
-              style={styles.input}
               placeholder="Street"
+              style={styles.input}
               value={shippingInfo.street}
-              onChangeText={(text) =>
-                setShippingInfo((prev) => ({ ...prev, street: text }))
-              }
+              onChangeText={(text) => setShippingInfo({ ...shippingInfo, street: text })}
             />
             <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={() => proceedToNext('shipping', 'checkout')}>
-              <Text style={styles.primaryButtonText}>Proceed to Checkout</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() => toggleModal('shipping', false)}>
-              <Text style={styles.secondaryButtonText}>Cancel</Text>
+              style={styles.modalNextButton}
+              onPress={() => proceedToNext('shipping', 'checkout')}
+            >
+              <Text style={styles.modalButtonText}>Next</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
       {/* Checkout Modal */}
-      <Modal visible={modals.checkout} transparent animationType="fade">
+      <Modal visible={modals.checkout} transparent>
         <View style={styles.modalContainer}>
-          <View style={styles.card}>
-            <Text style={styles.modalHeader}>Checkout Details</Text>
-            <ScrollView>
-              <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Accessory:</Text>{' '}
-                {accessory.name}
-              </Text>
-              <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Quantity:</Text>{' '}
-                {cart.quantity}
-              </Text>
-              <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Total Price:</Text> ₱
-                {accessory.price * cart.quantity}
-              </Text>
-              <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Payment Method:</Text>{' '}
-                {paymentMethod}
-              </Text>
-              <Text style={styles.detailText}>
-                <Text style={styles.detailLabel}>Shipping Address:</Text>
-              </Text>
-              <Text style={styles.detailSubText}>
-                {shippingInfo.fullName}, {shippingInfo.street},{' '}
-                {shippingInfo.barangay}
-              </Text>
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={handleConfirmOrder}>
-              <Text style={styles.primaryButtonText}>Confirm Order</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.secondaryButton}
-              onPress={() => toggleModal('checkout', false)}>
-              <Text style={styles.secondaryButtonText}>Cancel</Text>
-            </TouchableOpacity>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Confirm Your Order</Text>
+            <Text>Accessory: {accessory.name}</Text>
+            <Text>Quantity: {cart.quantity}</Text>
+            <Text>Payment Method: {paymentMethod}</Text>
+            <Text>Shipping Address: {`${shippingInfo.street}, ${shippingInfo.barangay}`}</Text>
+            <View style={styles.buttonContainer}>
+              {/* Confirm Button */}
+              <TouchableOpacity
+                style={styles.modalNextButton}
+                onPress={handleConfirmOrder}
+              >
+                <Text style={styles.modalButtonText}>Confirm</Text>
+              </TouchableOpacity>
+              {/* Cancel Button */}
+              <TouchableOpacity
+                style={styles.modalCancelButton}
+                onPress={() => toggleModal('checkout', false)}
+              >
+                <Text style={styles.modalButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
 
+
       {/* Success Modal */}
-      <Modal visible={modals.success} transparent animationType="fade">
+      <Modal visible={modals.success} transparent>
         <View style={styles.modalContainer}>
-          <View style={styles.card}>
-            <Text style={styles.successText}>Order Confirmed!</Text>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Order Confirmed!</Text>
+            <Text>Thank you for your purchase.</Text>
             <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={handleBackToHome}>
-              <Text style={styles.primaryButtonText}>Back to Home</Text>
+              style={styles.modalNextButton}
+              onPress={() => toggleModal('success', false)}
+            >
+              <Text style={styles.modalButtonText}>Done</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -298,267 +213,98 @@ const AccessoriesDetails = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-  },
-  accessoryImage: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    borderRadius: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 6,
-    marginTop: 5,
-  
-  },
-  accessoryName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 8,
-    textAlign: 'center',
-  },
-  accessoryPrice: {
-    fontSize: 20,
-    color: '#0288d1',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  accessoryDescriptionContainer: {
-    padding: 12,
-    backgroundColor: '#f0f0f0',
-    marginBottom: 16,
-    borderRadius: 8,
-  },
-  accessoryDescription: {
-    fontSize: 16,
-    color: '#333',
-  },
-  renterContainer: {
+  container: { flex: 1, padding: 20 },
+  accessoryImage: { width: '100%', height: 200 },
+  accessoryName: { fontSize: 18, fontWeight: 'bold', top: 20, },
+  accessoryPrice: { fontSize: 16, color: '#3498db', top: 30, },
+  itemDescription: { marginVertical: 10, color: '#7f8c8d',top: 40, },
+  contactDetailsContainer: {
     flexDirection: 'row',
-    marginBottom: 16,
+    justifyContent: 'space-evenly',
+    marginVertical: 20,
+    top: 60,
+  },
+  contactIcon: { alignItems: 'center', justifyContent: 'center' },
+  orderButton: {
+    padding: 15,
+    backgroundColor: '#2ecc71',
+    borderRadius: 5,
     alignItems: 'center',
+    top: 70,
   },
-  renterImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
-  },
-  renterTextContainer: {
-    flex: 1,
-  },
-  renterName: {
+  companyName: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#2c3e50',
+    textAlign: 'center',
+    padding: 20,
+    backgroundColor: 'lightgray',
+    borderRadius: 20,
+    top: 50,
   },
-  renterTitle: {
-    fontSize: 14,
-    color: '#777',
+  
+  orderButtonText: { color: '#fff', fontWeight: 'bold', },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000088',
+    top: 10,
   },
-  contactInfoContainer: {
-    marginBottom: 16,
+  modalContent: { backgroundColor: '#fff', padding: 20, borderRadius: 10 },
+  modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+  quantityContainer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center' },
+  quantityButton: { fontSize: 20, padding: 10, color: '#34495e' },
+  quantityText: { fontSize: 18, marginHorizontal: 20 },
+  modalNextButton: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  modalButtonText: { color: '#fff', fontWeight: 'bold' },
+  input: {
+    borderWidth: 1,
+    borderColor: '#bdc3c7',
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 5,
+  },
+  paymentOption: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#bdc3c7',
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+  selectedOption: {
+    backgroundColor: '#ecf0f1',
+    borderColor: '#3498db',
+  },
+  paymentText: { fontSize: 16 },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  modalCancelButton: {
+    padding: 10,
+    backgroundColor: '#e74c3c',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 10,
+    flex: 1,
+  },
+  modalNextButton: {
+    padding: 10,
+    backgroundColor: '#2ecc71',
+    borderRadius: 5,
+    alignItems: 'center',
+    marginHorizontal: 10,
     
   },
-  contactInfoText: {
-    fontSize: 16,
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  renterIconsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center', // Center icons horizontally
-    alignItems: 'center', // Center icons vertically
-    width: '100%', // Ensure the container takes full width
-  },
   
-  iconWrapper: {
-    padding: 8,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 8,
-    marginHorizontal: 10, // Use horizontal margin for spacing between icons
-    marginTop: 10,
-  },
-  addToCartButton: {
-    backgroundColor: '#0288d1',
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  addToCartButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  card: {
-    backgroundColor: '#fff',
-    width: '80%',
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  modalHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  quantityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  quantityButton: {
-    backgroundColor: '#0288d1',
-    padding: 10,
-    borderRadius: 8,
-    marginHorizontal: 8,
-  },
-  quantityButtonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  quantityText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  primaryButton: {
-    backgroundColor: '#0288d1',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  primaryButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  secondaryButton: {
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginTop: 12,
-    alignItems: 'center',
-  },
-  secondaryButtonText: {
-    fontSize: 18,
-    color: '#0288d1',
-  },
-  optionButton: {
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginVertical: 8,
-    width: '100%',
-    alignItems: 'center',
-  },
-  optionButtonText: {
-    fontSize: 18,
-    color: '#0288d1',
-  },
-  input: {
-    width: '100%',
-    padding: 12,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  successText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#28a745',
-    marginBottom: 20,
-  },
-  detailText: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  detailLabel: {
-    fontWeight: 'bold',
-  },
-  detailSubText: {
-    fontSize: 16,
-    marginLeft: 16,
-    color: '#777',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  card: {
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 12,
-    width: '80%',
-  },
-  modalHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  quantityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  quantityButton: {
-    backgroundColor: '#0288d1',
-    padding: 10,
-    borderRadius: 8,
-  },
-  quantityButtonText: { color: '#fff', fontSize: 18 },
-  quantityText: { fontSize: 24, marginHorizontal: 16, alignSelf: 'center' },
-  primaryButton: {
-    backgroundColor: '#1b5e20',
-    paddingVertical: 12,
-    marginTop: 16,
-    borderRadius: 8,
-  },
-  primaryButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  secondaryButton: {
-    backgroundColor: '#d32f2f',
-    paddingVertical: 12,
-    marginTop: 8,
-    borderRadius: 8,
-  },
-  secondaryButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16,
-  },
-  optionButton: {
-    backgroundColor: '#0288d1',
-    paddingVertical: 12,
-    marginVertical: 8,
-    borderRadius: 8,
-  },
-  optionButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center', // This ensures the text is centered
-  },
 });
 
 export default AccessoriesDetails;
