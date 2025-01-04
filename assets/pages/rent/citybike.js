@@ -5,7 +5,11 @@ import { useBikeContext } from '../../admin/BikeContext';
 
 const CityBikes = () => {
   const navigation = useNavigation();
-  const { cityBikes } = useBikeContext(); // Access bike data from context
+  const { cityBikes } = useBikeContext();
+
+  if (!cityBikes) {
+    return <Text>Loading bikes...</Text>;
+  }
 
   const handlePress = (bike) => {
     if (bike.status === 'available') {
@@ -15,12 +19,11 @@ const CityBikes = () => {
 
   const renderItem = ({ item }) => {
     const isAvailable = item.status === 'available';
-    const statusStyle =
-      item.status === 'available'
-        ? styles.statusAvailable
-        : item.status === 'not available'
-        ? styles.statusNotAvailable
-        : styles.statusMaintenance;
+    const statusStyle = isAvailable
+      ? styles.statusAvailable
+      : item.status === 'not available'
+      ? styles.statusNotAvailable
+      : styles.statusMaintenance;
 
     return (
       <TouchableOpacity
@@ -51,11 +54,10 @@ const CityBikes = () => {
   );
 };
 
+export default CityBikes;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
+  container: { flex: 1, padding: 10 },
   bikeCard: {
     flex: 1,
     alignItems: 'center',
@@ -66,40 +68,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
-  disabledCard: {
-    backgroundColor: '#f2f2f2',
-  },
-  bikeImage: {
-    width: 130,
-    height: 120,
-    marginBottom: 10,
-    resizeMode: 'contain',
-  },
-  bikeName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  bikePrice: {
-    fontSize: 14,
-    color: '#2ecc71',
-  },
-  bikeStatus: {
-    fontSize: 12,
-    marginTop: 5,
-  },
-  statusAvailable: {
-    color: '#2ecc71',
-  },
-  statusNotAvailable: {
-    color: '#e74c3c',
-  },
-  statusMaintenance: {
-    color: '#f39c12',
-  },
-  listContainer: {
-    paddingBottom: 10,
-  },
+  disabledCard: { backgroundColor: '#f2f2f2' },
+  bikeImage: { width: 130, height: 120, marginBottom: 10, resizeMode: 'contain' },
+  bikeName: { fontSize: 16, fontWeight: 'bold', textAlign: 'center' },
+  bikePrice: { fontSize: 14, color: '#2ecc71' },
+  bikeStatus: { fontSize: 12, marginTop: 5 },
+  statusAvailable: { color: '#2ecc71' },
+  statusNotAvailable: { color: '#e74c3c' },
+  statusMaintenance: { color: '#f39c12' },
+  listContainer: { paddingBottom: 10 },
 });
-
-export default CityBikes;

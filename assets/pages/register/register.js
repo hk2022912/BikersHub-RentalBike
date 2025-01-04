@@ -12,9 +12,9 @@ import {
   Alert,
   Modal,
 } from "react-native";
-import { Picker } from '@react-native-picker/picker';
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Register = ({ navigation }) => {
   const [form, setForm] = useState({
@@ -65,7 +65,7 @@ const Register = ({ navigation }) => {
   const handleRegister = async () => {
     if (validateForm()) {
       try {
-        const response = await axios.post("http://192.168.1.9:3001/register", {
+        const response = await axios.post("http://192.168.1.8:3001/register", {
           fullName: form.fullName,
           email: form.email,
           password: form.password,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingHorizontal: 20,
     paddingVertical: 20,
-    marginTop: 50,
+    marginTop: 120,
   },
   title: {
     fontSize: 28,

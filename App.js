@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { AccessoriesProvider } from './assets/admin/AccessoriesContext'; // Make sure the path is correct
+import { BikeProvider } from './assets/admin/BikeContext';
 import Login from './assets/pages/login/login'; 
 import Register from './assets/pages/register/register';
 import LogRes from './assets/pages/register/logres';
@@ -46,333 +47,344 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <AccessoriesProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Welcome">
-          <Stack.Screen
-            name="Welcome"
-            component={Welcome}
-            options={{ headerShown: false }} 
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerShown: false, 
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="LogRes"
-            component={LogRes}
-            options={{
-              headerShown: false, 
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{ headerShown: false }} 
-          />
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              headerShown: false,
-              headerTitle: null, 
-            }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              title: 'Profile',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Recovery"
-            component={Recovery}
-            options={{
-              title: 'Recovery',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Rent"
-            component={Rent}
-            options={{
-              title: 'Select Your Category',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="BikeDetails"
-            component={BikeDetails}
-            options={{
-              title: 'Bike Details',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Notification"
-            component={Notification}
-            options={{
-              title: 'Notifications',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="CityBikes"
-            component={CityBikes}
-            options={{
-              title: 'City Bikes',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="MountainBikes"
-            component={MountainBikes}
-            options={{
-              title: 'Mountain Bikes',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="HybridBikes"
-            component={HybridBikes}
-            options={{
-              title: 'Hybrid Bikes',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Map"
-            component={UserMap}
-            options={{
-              title: 'Map',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Tips"
-            component={Tips}
-            options={{
-              title: 'Safety & Maintenance Tips',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Wheels"
-            component={Wheels}
-            options={{
-              title: 'How to Fix a Wheel',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Brakes"
-            component={Brakes}
-            options={{
-              title: 'How to handle your Brakes',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Handlebars"
-            component={Handlebars}
-            options={{
-              title: 'How to handle Handlebars',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Frame"
-            component={Frame}
-            options={{
-              title: 'Assembling your Frame',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Fork"
-            component={Fork}
-            options={{
-              title: 'Repairing your Fork',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Saddle"
-            component={Saddle}
-            options={{
-              title: 'Adjusting your Saddle (Seat)',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Drivetrain"
-            component={Drivetrain}
-            options={{
-              title: 'Upgrading your Drivetrain',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Gears"
-            component={Gears}
-            options={{
-              title: 'Upgrading your Gears',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Suspension"
-            component={Suspension}
-            options={{
-              title: 'Upgrading your Suspension',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Accessories"
-            component={Accessories}
-            options={{
-              title: 'Upgrading your Bicycle with Accessories',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Guides"
-            component={Guide}
-            options={{
-              title: 'Guide & Tutorials',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="MaintenanceTips"
-            component={MaintenanceTips}
-            options={{
-              title: 'Maintenance Tips',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="SafetyTips"
-            component={SafetyTips}
-            options={{
-              title: 'Safety Tips',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="AccessoriesDetails"
-            component={AccessoriesDetails}
-            options={{
-              title: 'Accessories Details',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="AccessoriesBike"
-            component={AccessoriesBike}
-            options={{
-              title: 'Bike Accessories',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Cart"
-            component={Cart}
-            options={{
-              title: 'Your Cart',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="CheckoutDetails"
-            component={CheckoutDetails}
-            options={{
-              title: 'Checkout Details',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="Admin"
-            component={Admin}
-            options={{
-              title: 'Admin Panel',
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="BikeCategoryDetails"
-            component={BikeCategoryDetails}
-            options={{
-              title: 'Bike Category Details',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="AccessoryList"
-            component={AccessoryList}
-            options={{
-              title: 'Accessory List',
-              headerShown: true,
-              headerTitleAlign: 'center',
-            }}
-          />
-          <Stack.Screen
-            name="AdminLogin"
-            component={AdminLogin}
-            options={{
-              title: 'Admin Login',
-              headerShown: false,
-              headerTitleAlign: 'center',
-            }}
-          />
-           <Stack.Screen 
-            name="AdminDashboard" 
-            component={Dashboard} 
-            options={{ title: 'Dashboard', headerShown: false, }} 
-          />
+    <BikeProvider>  
+      <AccessoriesProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Welcome">
+            <Stack.Screen
+              name="Welcome"
+              component={Welcome}
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false, 
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="LogRes"
+              component={LogRes}
+              options={{
+                headerShown: false, 
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                headerShown: false,
+                headerTitle: null, 
+              }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                title: 'Profile',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Recovery"
+              component={Recovery}
+              options={{
+                title: 'Recovery',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Rent"
+              component={Rent}
+              options={{
+                title: 'Select Your Category',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="BikeDetails"
+              component={BikeDetails}
+              options={{
+                title: 'Bike Details',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Notification"
+              component={Notification}
+              options={{
+                title: 'Notifications',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="CityBikes"
+              component={CityBikes}
+              options={{
+                title: 'CityBikes',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="MountainBikes"
+              component={MountainBikes}
+              options={{
+                title: 'Mountain Bikes',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="HybridBikes"
+              component={HybridBikes}
+              options={{
+                title: 'Hybrid Bikes',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Map"
+              component={UserMap}
+              options={{
+                title: 'Map',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Tips"
+              component={Tips}
+              options={{
+                title: 'Safety & Maintenance Tips',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Wheels"
+              component={Wheels}
+              options={{
+                title: 'How to Fix a Wheel',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Brakes"
+              component={Brakes}
+              options={{
+                title: 'How to handle your Brakes',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Handlebars"
+              component={Handlebars}
+              options={{
+                title: 'How to handle Handlebars',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Frame"
+              component={Frame}
+              options={{
+                title: 'Assembling your Frame',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Fork"
+              component={Fork}
+              options={{
+                title: 'Repairing your Fork',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Saddle"
+              component={Saddle}
+              options={{
+                title: 'Adjusting your Saddle (Seat)',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Drivetrain"
+              component={Drivetrain}
+              options={{
+                title: 'Upgrading your Drivetrain',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Gears"
+              component={Gears}
+              options={{
+                title: 'Upgrading your Gears',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Suspension"
+              component={Suspension}
+              options={{
+                title: 'Upgrading your Suspension',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Accessories"
+              component={Accessories}
+              options={{
+                title: 'Upgrading your Bicycle with Accessories',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Guides"
+              component={Guide}
+              options={{
+                title: 'Guide & Tutorials',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="MaintenanceTips"
+              component={MaintenanceTips}
+              options={{
+                title: 'Maintenance Tips',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="SafetyTips"
+              component={SafetyTips}
+              options={{
+                title: 'Safety Tips',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="AccessoriesDetails"
+              component={AccessoriesDetails}
+              options={{
+                title: 'Accessories Details',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="AccessoriesBike"
+              component={AccessoriesBike}
+              options={{
+                title: 'Bike Accessories',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Cart"
+              component={Cart}
+              options={{
+                title: 'Your Cart',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="CheckoutDetails"
+              component={CheckoutDetails}
+              options={{
+                title: 'Checkout Details',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="Admin"
+              component={Admin}
+              options={{
+                title: 'Admin Panel',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="BikeCategoryDetails"
+              component={BikeCategoryDetails}
+              options={{
+                title: 'Bike Category Details',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="AccessoryList"
+              component={AccessoryList}
+              options={{
+                title: 'Accessory List',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+            <Stack.Screen
+              name="AdminLogin"
+              component={AdminLogin}
+              options={{
+                title: 'Admin Login',
+                headerShown: false,
+                headerTitleAlign: 'center',
+              }}
+            />
             <Stack.Screen 
-            name="BikeList" 
-            component={BikeList} 
-            options={{ title: 'Bike Categories' }} 
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AccessoriesProvider>
+              name="AdminDashboard" 
+              component={Dashboard} 
+              options={{ title: 'Dashboard', headerShown: false, }} 
+            />
+              <Stack.Screen 
+              name="BikeList" 
+              component={BikeList} 
+              options={{ title: 'Bike Categories' }} 
+            />
+            <Stack.Screen
+              name="bikeCategories"
+              component={bikeCategories}
+              options={{
+                title: 'Bike Category Details',
+                headerShown: true,
+                headerTitleAlign: 'center',
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AccessoriesProvider>
+    </BikeProvider>  
   );
 }

@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 export default function AdminLogin({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const handleLogin = () => {
     // Basic validation (add more logic as necessary)
@@ -26,18 +27,25 @@ export default function AdminLogin({ navigation }) {
         onChangeText={(text) => setUsername(text)}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry={!showPassword} // Toggle the secureTextEntry based on state
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setShowPassword((prev) => !prev)} // Toggle password visibility
+        >
+          <Text style={styles.eyeIconText}>{showPassword ? 'Hide' : 'Show'}</Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -63,6 +71,20 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
   },
+  passwordContainer: {
+    width: '100%',
+    position: 'relative', // Position the eye icon
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 15,
+  },
+  eyeIconText: {
+    color: '#0EA5E9',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   button: {
     width: '100%',
     padding: 15,
@@ -75,9 +97,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
-  },
-  createAccountText: {
-    color: '#007BFF',
-    fontSize: 16,
   },
 });
