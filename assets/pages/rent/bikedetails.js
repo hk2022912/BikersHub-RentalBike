@@ -1,125 +1,163 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, params, View, route, Text, Image, TouchableOpacity, Animated, ScrollView, Modal, } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Animated,
+  ScrollView,
+  Modal,
+  TextInput,
+  Button,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { MaterialIcons } from "@expo/vector-icons"; 
 
-export default function BikeDetails({route}) {
-  const { bike } = route.params; 
-  
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
-  const [showDate, setShowDate] = useState(false);
-  const [showTime, setShowTime] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false); // For payment modal
-  const [showRentModal, setShowRentModal] = useState(false); // For rent success modal
-  const [paymentMethod, setPaymentMethod] = useState("Gcash"); // Track selected payment method
+export default function BikeDetails({ route }) {
+  const { bike } = route.params;
   const fadeAnim = useState(new Animated.Value(0))[0];
 
-  const onDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-    setShowDate(false);
-  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [paymentModalVisible, setPaymentModalVisible] = useState(false);
+  const [receiptModalVisible, setReceiptModalVisible] = useState(false);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+  const [hours, setHours] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  const onTimeChange = (event, selectedTime) => {
-    const currentTime = selectedTime || time;
-    setTime(currentTime);
-    setShowTime(false);
-  };
-
-  const fadeIn = () => {
+  useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 800,
       useNativeDriver: true,
     }).start();
-  };
-
-  useEffect(() => {
-    fadeIn();  // Trigger fade-in animation only once when the component mounts
   }, []);
 
-  const formatTime = (time) => {
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  const handleRentNow = () => {
+    const calculatedAmount = parseFloat(hours) * bike.price;
+    setTotalAmount(calculatedAmount.toFixed(2));
+    setModalVisible(false);
+    setPaymentModalVisible(true);
   };
+
+  const handlePaymentCompletion = () => {
+    setPaymentModalVisible(false);
+    setReceiptModalVisible(true);
+  };
+
+  const handleConfirmOrder = async () => {
+    try {
+      const response = await fetch("http://10.0.0.66:3001/api/confirmRent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bikeName: bike.name,
+          hours: hours,
+          totalAmount: totalAmount,
+          date: date,
+          time: time,
+          paymentMethod: paymentMethod,
+        }),
+      });
+  
+      // Check if the response is OK (status code 200-299)
+      if (!response.ok) {
+        throw new Error(`Failed to confirm the order. Status: ${response.status}`);
+      }
+  
+      // Log the response as text first
+      const responseText = await response.text();
+      console.log('Response Text:', responseText);
+  
+      // Try to parse the response as JSON
+      const responseBody = JSON.parse(responseText);
+      console.log('Response Body:', responseBody);
+  
+      // If successful, handle the response
+      alert("Order successfully confirmed!");
+      setReceiptModalVisible(false);
+      setSuccessModalVisible(true);
+    } catch (error) {
+      console.error("Error confirming order:", error);
+      alert("There was an error confirming your order. Please try again.");
+    }
+  };
+  
+  
   
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-    <View style={styles.container}>
-      {/* Display the selected bike image */}
-      <Image source={bike.imageUrl} style={styles.bikeImage} />
-      <Text style={styles.bikeType}>{bike.name}</Text>
+      <View style={styles.container}>
+        <Image source={bike.imageUrl} style={styles.bikeImage} />
+        <Text style={styles.bikeType}>{bike.name}</Text>
 
-        {/* Date, Time Picker, and Price Section */}
-        <View style={styles.pickerContainer}>
-          <TouchableOpacity onPress={() => setShowDate(true)} style={styles.iconButton}>
-            <MaterialIcons name="calendar-today" size={30} color="#3498db" />
-            {date && (
-              <Text style={styles.dateTimeText}>{date.toLocaleDateString()}</Text>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setShowTime(true)} style={styles.iconButton}>
-            <MaterialIcons name="access-time" size={30} color="#3498db" />
-            {time && (
-              <Text style={styles.dateTimeText}>{formatTime(time)}</Text>
-            )}
-          </TouchableOpacity>
-          <View style={styles.priceContainer}>
-              <Text style={styles.priceText}>Price</Text>
-              <Text style={styles.price}>₱{bike.price}</Text>
-          </View>
-
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>₱{bike.price}/hour</Text>
         </View>
 
-        {/* Show DateTimePicker only if visible */}
-        {showDate && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            is24Hour={true}
-            onChange={onDateChange}
-          />
-        )}
-        {showTime && (
-          <DateTimePicker
-            value={time}
-            mode="time"
-            is24Hour={false}  // Use 12-hour format for AM/PM
-            onChange={onTimeChange}
-          />
-        )}
-
-        {/* Overview Section */}
         <Animated.View style={[styles.overviewContainer, { opacity: fadeAnim }]}>
           <Text style={styles.overviewTitle}>Overview</Text>
           <Text style={styles.overviewText}>{bike.description}</Text>
         </Animated.View>
 
-        {/* Payment Section */}
-        <View style={styles.paymentContainer}>
-          <Text style={styles.paymentTitle}>Payment Method</Text>
-          <TouchableOpacity
-            style={styles.paymentMethodButton}
-            onPress={() => setShowPaymentModal(true)} // Show payment modal
-          >
-            <Text style={styles.paymentButtonText}>{paymentMethod}</Text>
-            <MaterialIcons name="chevron-right" size={20} color="#fff" />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.rentButton}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.rentButtonText}>RENT NOW</Text>
+        </TouchableOpacity>
 
-        {/* Payment Modal */}
+        {/* Rental Details Modal */}
         <Modal
-          visible={showPaymentModal}
           animationType="slide"
           transparent={true}
-          onRequestClose={() => setShowPaymentModal(false)}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer1}>
+              <Text style={styles.modalTitle}>Rent Bike</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter hours"
+                keyboardType="numeric"
+                value={hours}
+                onChangeText={setHours}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter date (e.g., 2025-01-10)"
+                value={date}
+                onChangeText={setDate}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter time (e.g., 14:30)"
+                value={time}
+                onChangeText={setTime}
+              />
+              <View style={styles.nextButton}>
+                <Button title="Next" color='#4CAF50' onPress={handleRentNow} />
+                </View>
+                <View style={styles.cancelButton}>
+                  <Button title="Cancel" color="red" onPress={() => setModalVisible(false)} />
+                </View>
+
+            </View>
+          </View>
+        </Modal>
+
+        {/* Payment Method Modal */}
+        <Modal
+          visible={paymentModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setPaymentModalVisible(false)}
         >
           <View style={styles.modalBackground}>
             <View style={styles.modalContainer}>
@@ -128,7 +166,7 @@ export default function BikeDetails({route}) {
                 style={styles.modalOption}
                 onPress={() => {
                   setPaymentMethod("PayMaya");
-                  setShowPaymentModal(false);
+                  handlePaymentCompletion();
                 }}
               >
                 <Text style={styles.modalOptionText}>PayMaya</Text>
@@ -137,24 +175,48 @@ export default function BikeDetails({route}) {
                 style={styles.modalOption}
                 onPress={() => {
                   setPaymentMethod("GCash");
-                  setShowPaymentModal(false);
+                  handlePaymentCompletion();
                 }}
               >
                 <Text style={styles.modalOptionText}>GCash</Text>
               </TouchableOpacity>
-          
               <TouchableOpacity
                 style={styles.modalOption}
                 onPress={() => {
                   setPaymentMethod("GoTyme");
-                  setShowPaymentModal(false);
+                  handlePaymentCompletion();
                 }}
               >
                 <Text style={styles.modalOptionText}>GoTyme</Text>
               </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Receipt/Confirmation Modal */}
+        <Modal
+          visible={receiptModalVisible}
+          animationType="slide"
+          transparent={true}
+          onRequestClose={() => setReceiptModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer3}>
+              <Text style={styles.modalTitle}>Receipt</Text>
+              <Text style={styles.receiptText}>Total Amount: ₱{totalAmount}</Text>
+              <Text style={styles.receiptText}>Date: {date}</Text>
+              <Text style={styles.receiptText}>Time: {time}</Text>
+              <Text style={styles.receiptText}>Payment Method: {paymentMethod}</Text>
+              <TouchableOpacity
+                style={styles.confirmOrderButton}
+                onPress={handleConfirmOrder}
+              >
+                <Text style={styles.confirmOrderText}>Confirm Order</Text>
+              </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.modalCloseButton}
-                onPress={() => setShowPaymentModal(false)}
+                onPress={() => setReceiptModalVisible(false)}
               >
                 <Text style={styles.modalCloseText}>Close</Text>
               </TouchableOpacity>
@@ -162,42 +224,22 @@ export default function BikeDetails({route}) {
           </View>
         </Modal>
 
-        {/* Renter Details */}
-        <View style={styles.renterContainer}>
-          <View style={styles.renterImageContainer}>
-            <Image source={require('../../img/logo.png')} style={styles.renterImage} />
-          </View>
-          <View style={styles.renterTextContainer}>
-            <Text style={styles.renterName}>BikersHub Company</Text>
-            <Text style={styles.renterTitle}>Owner of BikersHub</Text>
-          </View>
-        </View>
-
-        {/* Rent Now Button */}
-        <TouchableOpacity 
-          style={styles.rentButton}
-          onPress={() => setShowRentModal(true)} // Show rent success modal when clicked
-        >
-          <Text style={styles.rentButtonText}>RENT NOW</Text>
-        </TouchableOpacity>
-
-        {/* Rent Success Modal */}
+        {/* Success Modal */}
         <Modal
-          visible={showRentModal}
-          animationType="fade"
+          visible={successModalVisible}
+          animationType="slide"
           transparent={true}
-          onRequestClose={() => setShowRentModal(false)}
+          onRequestClose={() => setSuccessModalVisible(false)}
         >
-          <View style={styles.modalBackground}>
-            <View style={styles.successModalContainer}>
-              <MaterialIcons name="check-circle" size={80} color="#2ecc71" />
-              <Text style={styles.successTitle}>Congratulations!</Text>
-              <Text style={styles.successMessage}>Your rent has been successfully confirmed. Enjoy your ride!</Text>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer2}>
+              <Text style={styles.modalTitle}>Success</Text>
+              <Text style={styles.successMessage}>You successfully rented the bike!</Text>
               <TouchableOpacity
                 style={styles.modalCloseButton}
-                onPress={() => setShowRentModal(false)}
+                onPress={() => setSuccessModalVisible(false)}
               >
-                <Text style={styles.modalCloseText}>OK</Text>
+                <Text style={styles.modalCloseText}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -205,8 +247,6 @@ export default function BikeDetails({route}) {
 
         <StatusBar style="auto" />
       </View>
-
-      
     </ScrollView>
   );
 }
@@ -235,39 +275,13 @@ const styles = StyleSheet.create({
     color: "#333",
     marginBottom: 20,
   },
-  pickerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between", 
-    alignItems: "center", 
-    marginBottom: 30,
-    width: "100%",
-  },
-  iconButton: {
-    marginHorizontal: 10,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#f0f0f0",
-    elevation: 5,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  dateTimeText: {
-    marginLeft: 5,
-    fontSize: 14,
-    color: "#333",
-  },
   priceContainer: {
-    backgroundColor: "#f1c40f", // Yellow background
-    width: "18%", // Adjust width as needed
+    backgroundColor: "#f1c40f",
+    width: "50%",
     alignItems: "center",
     paddingVertical: 10,
-    marginTop: 5,
     borderRadius: 10,
-  },
-  priceText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
+    marginBottom: 30,
   },
   price: {
     fontSize: 24,
@@ -285,29 +299,8 @@ const styles = StyleSheet.create({
   },
   overviewText: {
     fontSize: 15,
-    color: 'black',
+    color: "black",
     marginTop: 10,
-  },
-  paymentContainer: {
-    width: "100%",
-    marginBottom: 20,
-  },
-  paymentTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  paymentMethodButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#3498db",
-    padding: 15,
-    borderRadius: 5,
-  },
-  paymentButtonText: {
-    fontSize: 16,
-    color: "#fff",
   },
   renterContainer: {
     flexDirection: "row",
@@ -352,65 +345,129 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  modalBackground: {
+  modalOverlay: {
     flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
+    width: "90%",
+    height: 290,
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
+    elevation: 5,
+  },
+  modalContainer1: {
+    width: "90%",
+    height: 340,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  modalContainer2: {
+    width: "90%",
+    height: 230,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+  modalContainer3: {
+    width: "90%",
+    height: 350,
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#333",
     marginBottom: 20,
   },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  modalButtons: {
+    width: '90%',
+    height: 50,
+    marginLeft: 20,
+    backgroundColor: '#4CAF50',
+  },
+  cancelButton: {
+    width: '100%',
+    height: 50,
+    marginTop: 10,
+  }, 
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   modalOption: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    padding: 15,
     backgroundColor: "#3498db",
     marginBottom: 10,
     borderRadius: 5,
-    width: "100%",
   },
   modalOptionText: {
     color: "#fff",
-    fontSize: 16,
-    textAlign: "center",
+    fontSize: 18,
   },
   modalCloseButton: {
+    padding: 15,
     backgroundColor: "#e74c3c",
-    paddingVertical: 10,
-    paddingHorizontal: 30,
     borderRadius: 5,
-    marginTop: 20,
+    marginTop: 10,
+    height: 55,
   },
   modalCloseText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
+    textAlign: 'center',
   },
-  successModalContainer: {
-    backgroundColor: "#fff",
-    padding: 30,
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  successTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+  modalNextButton: {
+    padding: 15,
+    backgroundColor: "#2ecc71",
+    borderRadius: 5,
     marginTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalNextButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },  
+  receiptText: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 10,
+  },
+  confirmOrderButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+    height: 50,
+  },
+  confirmOrderText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   successMessage: {
-    fontSize: 16,
-    color: "#777",
-    marginVertical: 10,
-  },
+    fontSize: 18,
+    textAlign: 'center',
+    marginVertical: 20,
+  },  
 });

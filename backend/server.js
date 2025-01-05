@@ -10,6 +10,8 @@ const port = 3001;
 
 // Enable CORS for local development
 app.use(cors());
+// Middleware
+app.use(bodyParser.json());
 
 // Parse incoming requests with JSON payloads
 app.use(bodyParser.json());
@@ -220,33 +222,6 @@ app.post('/change-password', async (req, res) => {
 
 
 
-// Rent Now API
-app.post('/api/rent', async (req, res) => {
-  const { userId, bikeName, price, paymentMethod, date, time } = req.body;
-
-  // Validate incoming data
-  if (!userId || !bikeName || !price || !paymentMethod || !date || !time) {
-    return res.status(400).json({ error: 'All fields are required.' });
-  }
-
-  try {
-    // Insert the rental details into the database
-    const query = `
-      INSERT INTO rentals (user_id, bike_name, price, payment_method, rental_date, rental_time)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `;
-    const values = [userId, bikeName, price, paymentMethod, date, time];
-
-    await db.promise().query(query, values);
-
-    // Respond with success message
-    res.status(200).json({ message: 'Bike rented successfully!' });
-  } catch (error) {
-    console.error('Error processing rent request:', error);
-    res.status(500).json({ error: 'Failed to process rent request. Please try again.' });
-  }
-});
-
 
 
 // Order confirmation API route
@@ -280,7 +255,6 @@ app.post('/api/confirm-order', (req, res) => {
   });
 });
 
-
 // Get bike details by ID
 app.get('/bike/:id', (req, res) => {
   const bikeId = req.params.id;
@@ -295,39 +269,40 @@ app.get('/bike/:id', (req, res) => {
   });
 });
 
-// Rent a bike
-app.post('/rent', (req, res) => {
-  const { bikeId, renterName, rentDate, rentTime, paymentMethod } = req.body;
-  const query = 'INSERT INTO rentals (bike_id, renter_name, rent_date, rent_time, payment_method) VALUES (?, ?, ?, ?, ?)';
-  db.query(query, [bikeId, renterName, rentDate, rentTime, paymentMethod], (err, result) => {
+app.post('/api/confirmRent', (req, res) => {
+  const { bikeName, hours, totalAmount, date, time, paymentMethod } = req.body;
+
+  // Validate the received data
+  if (!bikeName || !hours || !totalAmount || !date || !time || !paymentMethod) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  const query = 'INSERT INTO rentals (bike_name, hours, total_amount, rental_date, rental_time, payment_method) VALUES (?, ?, ?, ?, ?, ?)';
+  db.query(query, [bikeName, hours, totalAmount, date, time, paymentMethod], (err, result) => {
     if (err) {
-      console.error('Error inserting rental details:', err);
-      res.status(500).send('Internal server error');
-    } else {
-      res.status(201).json({ message: 'Bike rented successfully!', rentalId: result.insertId });
+      console.error("Database error:", err); // Log database errors
+      return res.status(500).json({ error: 'Failed to insert rental into database' });
     }
+
+    res.status(200).json({
+      message: 'Rental confirmed successfully!',
+      rentalDetails: {
+        bikeName,
+        hours,
+        totalAmount,
+        date,
+        time,
+        paymentMethod,
+      },
+    });
   });
 });
 
 
 
-// Define booking route
-app.post('/api/book-bike', (req, res) => {
-  const { bike_id, user_id, rent_date, rent_time, payment_method } = req.body;
 
-  // SQL query to insert booking data
-  const query = `
-    INSERT INTO bike_bookings (bike_id, user_id, rent_date, rent_time, payment_method, status)
-    VALUES (?, ?, ?, ?, ?, ?)`;
 
-  db.query(query, [bike_id, user_id, rent_date, rent_time, payment_method, 'confirmed'], (err, results) => {
-    if (err) {
-      console.error('Error inserting booking:', err);
-      return res.status(500).json({ error: 'Error booking bike' });
-    }
-    res.status(200).json({ message: 'Booking confirmed', bookingId: results.insertId });
-  });
-});
+
 
 // Start the server
 app.listen(port, () => {

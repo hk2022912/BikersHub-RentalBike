@@ -116,9 +116,9 @@ export default function AccessoryList() {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => deleteAccessory(item.id)}
-                style={styles.actionButton}
+                style={styles.actionButton2}
               >
-                <Text style={styles.actionText}>Delete</Text>
+                <Text style={styles.actionText2}>Delete</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#4CAF50',
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',
@@ -184,12 +184,24 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     marginLeft: 10,
-    backgroundColor: '#FFC107',
+    backgroundColor: '#4CAF50',
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
   },
   actionText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  
+  actionButton2: {
+    marginLeft: 10,
+    backgroundColor: 'red',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+  },
+  actionText2: {
     color: '#fff',
     fontSize: 14,
   },

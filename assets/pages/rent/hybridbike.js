@@ -1,72 +1,52 @@
 import React from 'react';
 import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BikeProvider, useBikeContext } from '../../admin/BikeContext';
+ 
 
-const MountainBikes = () => {
+const HybridBikes = () => {
   const navigation = useNavigation();
-
-  const mountainBikesData = [
-    {
-      id: 1,
-      name: 'Royce Union RMT Mens Bike',
-      price: 70,
-      imageUrl: require('../../img/hybrid1.jpg'),
-      description: 'Durable and lightweight aluminum frame, perfect for tackling rugged trails and smooth urban roads.',
-    },
-    {
-      id: 2,
-      name: 'Mongoose Malus Bike with Disc Brakes',
-      price: 80,
-      imageUrl: require('../../img/hybrid2.jpg'),
-      description: 'Equipped with fat tires and reliable disc brakes for superior control on sandy or snowy terrains.',
-    },
-    {
-      id: 3,
-      name: 'Rocky Mountain Bike',
-      price: 60,
-      imageUrl: require('../../img/hybrid3.jpg'),
-      description: 'Engineered for extreme off-road performance, featuring shock-absorbing suspension for a smoother ride.',
-    },
-    {
-      id: 4,
-      name: 'Folding Mountain Bike',
-      price: 90,
-      imageUrl: require('../../img/hybrid4.jpg'),
-      description: 'Compact and foldable design, ideal for adventurers seeking portability without compromising performance.',
-    },
-    {
-      id: 5,
-      name: 'Kent T-29 Men’s Mountain Bike',
-      price: 80,
-      imageUrl: require('../../img/hybrid5.jpg'),
-      description: '29-inch wheels with a sleek design, delivering stability and speed for both trails and urban exploration.',
-    },
-    {
-      id: 6,
-      name: 'Hiland Aluminum Hybrid Fitness Road Bike',
-      price: 70,
-      imageUrl: require('../../img/hybrid6.jpg'),
-      description: 'A versatile hybrid bike with a lightweight frame, perfect for fitness rides and long-distance commuting.',
-    },
-  ];
+  const { hybridBikes } = useBikeContext();
   
+    if (!hybridBikes) {
+      return <Text>Loading bikes...</Text>;
+    }
 
-  const handlePress = (bike) => {
+
+  const handlePress = (bike) => { 
+    if (bike.status === 'available') {
     navigation.navigate('BikeDetails', { bike });
+  }
   };
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => handlePress(item)} style={styles.bikeCard}>
-      <Image source={item.imageUrl} style={styles.bikeImage} />
-      <Text style={styles.bikeName}>{item.name}</Text>
-      <Text style={styles.bikePrice}>₱{item.price}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }) => {
+      const isAvailable = item.status === 'available';
+      const statusStyle = isAvailable
+        ? styles.statusAvailable
+        : item.status === 'not available'
+        ? styles.statusNotAvailable
+        : styles.statusMaintenance;
+  
+      return (
+        <TouchableOpacity
+          onPress={() => handlePress(item)}
+          style={[styles.bikeCard, !isAvailable && styles.disabledCard]}
+          disabled={!isAvailable}
+        >
+          <Image source={item.imageUrl} style={styles.bikeImage} />
+          <Text style={styles.bikeName}>{item.name}</Text>
+          <Text style={styles.bikePrice}>₱{item.price}</Text>
+          <Text style={[styles.bikeStatus, statusStyle]}>
+            {item.status.replace(/^\w/, (c) => c.toUpperCase())}
+          </Text>
+        </TouchableOpacity>
+      );
+    };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={mountainBikesData}
+        data={BikeProvider}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
@@ -88,10 +68,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
   },
+  disabledCard: { backgroundColor: '#f2f2f2' },
   bikeImage: { width: 130, height: 120, marginBottom: 10, resizeMode: 'contain' },
   bikeName: { fontSize: 16, fontWeight: 'bold', textAlign: 'center' },
   bikePrice: { fontSize: 14, color: '#2ecc71' },
+  bikeStatus: { fontSize: 12, marginTop: 5 },
+  statusAvailable: { color: '#2ecc71' },
+  statusNotAvailable: { color: '#e74c3c' },
+  statusMaintenance: { color: '#f39c12' },
   listContainer: { paddingBottom: 10 },
 });
 
-export default MountainBikes;
+export default HybridBikes;

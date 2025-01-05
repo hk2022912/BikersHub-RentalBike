@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, FlatList, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useBikeContext } from '../../admin/BikeContext';
+
 
 const MountainBikes = () => {
   const navigation = useNavigation();

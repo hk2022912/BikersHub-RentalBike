@@ -69,7 +69,7 @@ const Profile = (route) => {
     try {
       await AsyncStorage.removeItem('user');
       Alert.alert('Logged Out', 'You have been logged out.', [
-        { text: 'OK', onPress: () => navigation.replace('Login') },
+        { text: 'OK', onPress: () => navigation.replace('LogRes') },
       ]);
     } catch (error) {
       console.error('Error logging out:', error);

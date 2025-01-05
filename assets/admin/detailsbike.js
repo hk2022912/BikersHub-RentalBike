@@ -4,7 +4,7 @@ import { useBikeContext } from '../admin/BikeContext';
 
 export default function BikeCategoryDetails({ route }) {
   const { category } = route.params;
-  const { cityBikes, mountainBikes, hybridBikes, addBike, updateBikeStatus, removeBike, updateBikeDetails } = useBikeContext();
+  const { cityBikes, addBike, updateBikeStatus, removeBike, updateBikeDetails } = useBikeContext();
   const [refresh, setRefresh] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedBike, setEditedBike] = useState(null);
@@ -13,25 +13,12 @@ export default function BikeCategoryDetails({ route }) {
     setRefresh(false); // Reset refresh state on mount
   }, []);
 
-  if (!cityBikes || !mountainBikes || !hybridBikes) {
+  if (!cityBikes) {
     return <Text>Loading bikes...</Text>;
   }
 
-  // Filter bikes by category
-  let bikesInCategory = [];
-  switch (category) {
-    case 'city':
-      bikesInCategory = cityBikes.filter((bike) => bike.status === 'available');
-      break;
-    case 'mountain':
-      bikesInCategory = mountainBikes.filter((bike) => bike.status === 'available');
-      break;
-    case 'hybrid':
-      bikesInCategory = hybridBikes.filter((bike) => bike.status === 'available');
-      break;
-    default:
-      bikesInCategory = [];
-  }
+  // Filter bikes by category if needed, here we assume all bikes belong to the same category
+  const bikesInCategory = cityBikes.filter((bike) => bike.status === 'available');
 
   const toggleAvailability = (bike) => {
     const newStatus = bike.status === 'available' ? 'not available' : 'available';
@@ -91,11 +78,11 @@ export default function BikeCategoryDetails({ route }) {
     const newBike = {
       id: cityBikes.length + 1, // Temporary unique ID generation
       name: 'New Bike',
-      category: category, // Use the category passed in params
+      category: category.name, // Use the category passed in params
       status: 'available',
       price: 50,  // Default price
       imageUrl: require('../img/city1.jpg'),  // Default image URL
-      description: 'A new bike for category ' + category,
+      description: 'A new bike for category ' + category.name,
     };
     addBike(newBike);
     setRefresh(!refresh); // Trigger re-render
@@ -120,9 +107,9 @@ export default function BikeCategoryDetails({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{category.charAt(0).toUpperCase() + category.slice(1)} Bikes</Text>
+      <Text style={styles.title}>{category.name}</Text>
       <FlatList
-        data={bikesInCategory} // Show filtered bikes based on category
+        data={cityBikes} // Show all bikes
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderBike}
         contentContainerStyle={styles.listContainer}
@@ -228,20 +215,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#E74C3C',
     padding: 10,
     borderRadius: 5,
+    width: 100,
   },
   deleteButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   editButton: {
     marginTop: 12,
-    backgroundColor: '#F39C12',
+    backgroundColor: '#28A745',
     padding: 10,
     borderRadius: 5,
+    width: 100,
   },
   editButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   addButton: {
     marginTop: 20,

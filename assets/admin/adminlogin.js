@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Image, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function AdminLogin({ navigation }) {
   const [username, setUsername] = useState('');
@@ -18,6 +18,8 @@ export default function AdminLogin({ navigation }) {
 
   return (
     <View style={styles.container}>
+      
+      <Image source={require('../img/logo.png')} style={styles.bannerImage} />
       <Text style={styles.title}>Admin Login</Text>
 
       <TextInput
@@ -58,6 +60,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f4f4f4',
   },
+  bannerImage: {
+    width: '63%',
+    height: 150,
+    resizeMode: 'cover',
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+
   title: {
     fontSize: 30,
     fontWeight: 'bold',
