@@ -1,0 +1,34 @@
+CREATE DATABASE bikershub_db;
+
+USE bikershub_db;
+
+CREATE TABLE register (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accessory_name VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    shipping_info JSON NOT NULL,
+    total_cost DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE rentals (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  bike_name VARCHAR(255) NOT NULL,
+  hours INT NOT NULL,
+  total_amount DECIMAL(10, 2) NOT NULL,
+  rental_date DATE NOT NULL,
+  rental_time TIME NOT NULL,
+  payment_method VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
